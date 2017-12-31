@@ -1,0 +1,21 @@
+											HƯỚNG DẪN SÀI GITHUB
+						
+1. tạo thư mục Repositories trên sever
+2. tạo 1 thư mục mới khác tên hoặc clone trực tiếp về từ link server git clone [url]
+	nếu khác tên chạy lệnh:
+	git remote add origin [url]
+3. kiểm tra trạng thái 
+	git status hoặc git diff
+4. git add . để thêm tất cả vào dự kiến upload
+5. git commit -m "noi dung"
+6. đẩy nội dung lên
+	git push -u origin master 
+7. cập nhật nội dung về
+	git pull
+	nếu thư mục mới thì phải pull trước mới add 
+8. nếu commit gì đó sai thì chỉ cần 
+	git add nội dung mới sau đó
+	git commit 	--amend
+9. xem lịch sử 
+	git log
+	

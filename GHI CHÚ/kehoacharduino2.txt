@@ -1,0 +1,44 @@
+ngày 1: giới thiệu lại những gì đã dc học, phần mềm + các thiết bị + hàm
+		học về cảm biến lm35 xuất độ ẩm + bài tập   (20 con)
+		học về cảm biến nhiệt độ độ ẩm DHT11		(20 con)
+		bài tập bật tắt đèn qua cảm biến 
+				1: bật 1 led khi nhiệt độ hơn ngưỡng cho phép
+				2: bật 1 led và tắt một led xen kẽ 1 ngưỡng 
+				3: 2 cảm biến bật 2 led ngưỡng
+				4: 2 cảm biến bật 2 led khi nhiệt độ = nhau (cao hơn nữa là lệch 3)
+				5: bật đèn khi độ ẩm thấp hơn 30%
+		giới thiệu buzzer --> kêu khi nhiệt độ cao
+		kết hợp biến trở chọn ngưỡng cho cảm biến 
+ngày 2: 
+học về cảm biến chuyển động  (20 con)
+học về cảm biến vỗ tay (20 con)
+		bật một led khi có chuyển động 
+		2 led nhấp nháy xen kẻ khi có chuyển động + buzzer
+		giới thiệu cảm biến ánh sáng
+		kết hợp biến trở cho cảm biến ánh sáng (20 con) 
+ngày thứ 3: 
+học về đếm số lần với nút nhấn
+		nhấn 1 lần đèn 1 sáng, 2 lần tắt
+		nhấn 1 lần đèn 1 sáng, nhấn 2 lần đèn 1 tắt đèn 2 sáng, nhấn lần 3 cả 2 tắt
+		nhấn bật chức năng cảm biến ánh sáng, nhấn bật chuyển động 
+ngày thứ 4: 
+		học về cảm biến siêu âm (20 con) 
+		bật 1 đèn khi ở mức dưới 50
+		bật 1 đèn ở khoảng 30 -> 50, cả 2 ở khoảng dưới 30, quá là tắt
+		kết hợp cảm biến điều chỉnh ngưỡng khoảng cách 
+ngày thứ 5: 
+		giới thiệu màn hình lcd 1602 (20 con)
+		bài tập hiển thị tên, nhiệt độ, độ ẩm, khoảng cách
+ngày thứ 6, ngày thứ 7: 
+		giới thiệu nrf
+		giới thiệu hc06
+		giói thiệu servo
+
+
+10 uno				1tr650
+15 âm thanh			400
+10 test board		
+dây cắm
+10 cảm biến ánh sáng 
+
+		

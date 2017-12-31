@@ -1,0 +1,35 @@
+
+1.	Nhóm T-res Robot thông minh
+Nguyễn Duy Tâm 1512479
+Phạm Thành Kỳ Hưng 1512226
+Huỳnh Võ Nhật Huy 1512196
+2.	Nhóm Hanova 
+Nguyễn Duy Tâm 1512479
+Phạm Thành Kỳ Hưng 1512226
+Huỳnh Võ Nhật Huy 1512196
+Ngô Huỳnh Ngọc Khánh 1412669
+Hoàng Trung Hiếu 1512159
+
+3.	ISystem (S-IDEAS)
+Nguyễn Duy Tâm 1512479
+Phạm Thành Kỳ Hưng 1512226
+
+4.	Nhóm chống cận thị học đường
+Nguyễn Duy Tâm 1512479
+Huỳnh Võ Nhật Huy 1512196
+Phạm Thành Kỳ Hưng 1512226
+
+5.	Nhóm iGloves
+Nguyễn Duy Tâm 1512479
+Hoàng Trung Hiếu 1512159
+Phạm Thành Kỳ Hưng 1512226
+
+
+Giải Nhì Sáng tạo kỹ thuật Phú Yên lần thứ VI 11/2015 (cấp tỉnh tổ chức)
+Giải Nhất cuộc thi Ứng Dụng Di Động App Inventor 12/2015(cấp trường tổ chức)
+Huy chương Đồng Liên Hoan Sáng Tạo Trẻ Tp Hồ Chí Minh 12/2015 (cấp thành phố tổ chức)
+Giải Nhất cuộc thi Nasa Space Apps Challenge 4/2016 (cấp quốc gia Việt Nam tổ chức)
+Giải Khuyến Khích vòng chung kết cuộc Thi S-IDEAS 6/2016 (cấp trường tổ chức)
+Huy chương Bạc Liên Hoan Sáng Tạo Trẻ Tp Hồ Chí Minh 11/2016 (cấp thành phố tổ chức)
+Giải Nhì toàn cuộc Cuộc Thi Nhà Sáng Tạo Việt Nam Intel Edison 1/2017 (cấp quốc gia Việt Nam tổ chức)
+

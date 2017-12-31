@@ -1,0 +1,41 @@
+====================các lệnh linux
+https://quantrimang.com/cac-lenh-shell-co-ban-trong-linux-35789
+============================= kết nối wifi
+1. kiểm tra ds file hiện có
+sudo iwlist wlan0 scan
+2. lấy phần ssid và psk
+3. mở mục nhập nội dung
+sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+4. nhấn xuống điền nội dung sau 
+network={
+    ssid="The_ESSID_from_earlier"
+    psk="Your_wifi_password"
+}
+5.Lưu
+ctr X --> Y --> Inter
+6. reset mạng cho nó
+sudo wpa_cli reconfigure
+7. kiểm tra kết nối
+ifconfig wlan0
+
+==============================
+1. cài theo bài stream trên arduino
+2. để chạy lại lần 2 + ẩn dưới tiến trình để chạy lệnh tiếp theo
+LD_LIBRARY_PATH=/usr/local/lib mjpg_streamer -i "/usr/local/lib/input_uvc.so -d /dev/video0 -quality 100 -f 30 -r 640x480" -o "/usr/local/lib/output_http.so -w /usr/local/www -p 8080" > /dev/null 2>&1 &
+3. chụp 1 hình lưu ở PPNCKH 
+wget http://127.0.0.1:8080/?action=snapshot -O PPNCKH/class-`date +%Y-%m-%d-%H%M%S`.jpg
+
+4. cần kill tiến trình ghi hình để giảm thời gian
+killall mjpg_streamer
+5. chạy yolo + chạy hình trong tập PPNCKH
+cd darknet
+./darknet detect cfg/yolo.cfg yolo.weights ../PPNCKH/ppnckh.jpg
+5.1 dùng tiny yolo
+./darknet detector test cfg/voc.data cfg/tiny-yolo-voc.cfg tiny-yolo-voc.weights ../PPNCKH/class.jpg
+
+ ==== bài đánh giá gồm ======
+ hình ành, khung hình, thời gian, nhận xét
+ nếu cho vừa stream thì thời gian xử lý lên cực kì vậy nên killall tiến trình 5% 157.2 --> 163.8
+ đặc biệt tốc độ ảnh hưởng 95% time do nguồn cấp --> xung ko tối ưu  157-->297 --- + cam = 310
+ tiny + stream file 350kb = 42s (không phụ thuộc kích thước hình)
+ 

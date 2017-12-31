@@ -1,0 +1,48 @@
+1. deploy cái này lên rasp https://svds.com/tensorflow-image-recognition-raspberry-pi/
+2. code yolo cho tensorflow 
+https://github.com/thtrieu/darkflow
+3. đọc thí xác cái này 
+http://www.cvpapers.com/index.html
+
+4. đọc cái jupyterhub https://github.com/jupyterhub/jupyterhub
+5. cài tensor https://github.com/samjabrahams/tensorflow-on-raspberry-pi
+cài tensor step by step 
+https://github.com/samjabrahams/tensorflow-on-raspberry-pi/blob/master/GUIDE.md
+===========================
+6. link học tensor 
+https://github.com/Hvass-Labs/TensorFlow-Tutorials
+7. học python 2.7
+https://www.udemy.com/python-for-data-science-and-machine-learning-bootcamp/
+ 
+8. link paper
+http://www.eecs.qmul.ac.uk/~tmh/
+
+9. 3.5 python
+https://cuongquach.com/huong-dan-cai-dat-python-352-ubuntu-centos.html
+10. lam powerpoint
+https://www.youtube.com/watch?v=IKGZ4gyOIVU
+https://www.youtube.com/watch?v=zNYki4-w9NI
+11. Cài đặt ionic
+https://www.youtube.com/watch?v=Q2RCqjDO03w
+
+12. link tiếng anh
+https://www.youtube.com/watch?v=ewdrAO5nCpo
+13. link 2
+https://www.youtube.com/watch?v=Jiy9aQSgDI4
+
+14. slide team robotic
+https://docs.google.com/presentation/d/1ZSEHy54ocNZtcQ-nAwWyB2zvTr6n0QlZZpnjkgMq7vs/edit#slide=id.g229df5dd96_0_38
+15. google translate
+https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=n%E1%BB%99i%20dung&tl=vi&total=1&idx=0&textlen=1
+
+15. bài đọc tiếng anh 
+http://sangu.ge/templates/Gemini/images/Inglisur_enashi_testis_nimushi.pdf
+
+16. link solidword
+https://www.fshare.vn/file/HQZG1GZDLLUB
+17. gta v 
+https://www.fshare.vn/file/D9XM22X95PSMICW
+
+18. link mua máy tính 
+laptopgiabao.com
+

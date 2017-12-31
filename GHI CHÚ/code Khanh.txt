@@ -1,0 +1,24 @@
+#!/bin/sh
+
+echo "Killall fucking mjpg_streamer"
+killall mjpg_streamer
+
+echo "Start fucking mjpg_streamer"
+mjpg_streamer -i "/usr/local/lib/input_uvc.so -d /dev/video0 -quality 100 -f 30 -r 640x480" -o "/usr/local/lib/output_http.so -w /usr/local/www -p 8080" > /dev/null 2>&1 &
+
+echo "Start fucking task"
+
+echo "Init..."
+sleep 10
+echo "Init...OK"
+while true; do 
+	datetime="$(date +%Y-%m-%d-%H%M%S)"
+	filename="../PPNCKH/class-${datetime}.jpg"
+	echo "We will export to ${filename}"
+	echo -n "${datetime}," >> ../PPNCKH/fuckthogn.csv 
+	wget http://127.0.0.1:8080/?action=snapshot -O ${filename}
+	./darknet detector test cfg/voc.data cfg/tiny-yolo-voc.cfg tiny-yolo-voc.weights ${filename} | grep 'person' | wc -l >> ../PPNCKH/fuckthogn.csv
+	sleep 0.5
+done
+
+exit 0

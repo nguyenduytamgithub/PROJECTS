@@ -1,0 +1,25 @@
+ý tưởng camera detect hình ảnh khi ta nhìn về một hướng và nói what is this, tự search file hình ảnh trong tập dữ liệu hoặc từ google ra dc text và phát âm text đó nhờ google, giúp cho bọn trẻ tìm hiểu về thế giới quan :))
+hay cao hơn làm công nghệ đi phát hiện thứ ở nơi lạ
+
+nên học thêm cách detect 1 vật thể là gì truyền về
+
+
+ý tưởng tiếp theo về robot của mình
+là con robot hỏi và trả lời nhờ search
+hoặc trả trả lời nhờ tập dữ liệu
+nhận dạng được chủ 
+Nhân raspberry
+3d bên ngoài
+
+
+ý tưởn đếm số lượng học sinh rồi lên biểu đồ đánh giá môn học
+
+ý tưởng dùng bút gạch chân sau đó dịch thành từ camera nhận dạng nét gạch chân hoặc trong một phạm vi bút đã chỉ
+
+ý tưởng cái kính cho mấy nhỏ học tiếng anh, hỏi what is this nó nhận dạng vật thể với yolo sau đó nói ra thông tin vật sau khi đã detect
+
+ý tưởng hộp học tập, hộp tính tiền, hộp tính level nhân cách 
+
+con lắc đu --> thêm servo tự kéo thả the time
+
+làm robot học chính tả anh văn, từng đoạn lặp 3 lần chậm rãi, nhờ database kéo về github cho thu mục nhiều lên :3 cái này chiệu khó soạn đoạn văn bản lặp tự tông hợp cho tụi nhỏ học
