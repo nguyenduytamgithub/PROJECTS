@@ -1,11 +1,11 @@
 
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
+#include <Wire.h>
 
-
-const char* ssid = "GE";
+const char* ssid = "simone";
 const char* password = "1234567891011";
-const char* mqtt_server = "192.168.20.130";
+const char* mqtt_server = "192.168.0.100";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -34,7 +34,12 @@ void setup_wifi() {
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
 }
-
+void sent_msg (String msg_data, int code){
+    Wire.beginTransmission(8); // transmit to device #8
+    Wire.write(code);
+    Wire.write(msg_data.c_str());        // sends five bytes             // sends one byte
+    Wire.endTransmission();   
+}
 void callback(String topic, byte* payload, unsigned int length) {
   Serial.print("Message arrived [");
   Serial.print(topic);
@@ -45,16 +50,17 @@ void callback(String topic, byte* payload, unsigned int length) {
     msg_data += (char)payload[i];
   }
   Serial.println();
-if (topic == "ge/esp1/led"){
-   Serial.println(msg_data);
-  if (msg_data == "1") {
-    digitalWrite(D1, 1);   // Turn the LED on (Note that LOW is the voltage level
-    client.publish("ge/esp1/ledstt", "Đang bật");
-
-  } else {
-    digitalWrite(D1, 0); 
-    client.publish("ge/esp1/ledstt", "Đang tắt");
-  }
+if (topic == "counting/name"){
+    sent_msg(msg_data,11);
+ }else if (topic == "counting/id"){
+    sent_msg(msg_data,12);
+ }else if (topic == "counting/work"){
+   sent_msg(msg_data,13);
+ }else if (topic == "counting/target"){
+    Wire.beginTransmission(8); // transmit to device #8
+    Wire.write(14);
+    Wire.write(msg_data.toInt());        // sends five bytes             // sends one byte
+    Wire.endTransmission(); 
  }
 }
 
@@ -68,7 +74,10 @@ void reconnect() {
     // Attempt to connect
     if (client.connect(clientId.c_str())) {
       Serial.println("connected");
-      client.subscribe("ge/esp1/led");
+      client.subscribe("counting/name");
+      client.subscribe("counting/id");
+      client.subscribe("counting/work");
+      client.subscribe("counting/target");
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -80,7 +89,8 @@ void reconnect() {
 }
 
 void setup() {
-  pinMode(D1, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
+
+  Wire.begin(D1,D2);
   Serial.begin(115200);
   setup_wifi();
   client.setServer(mqtt_server, 1883);
@@ -94,14 +104,14 @@ void loop() {
   }
   client.loop();
 //
-//  long now = millis();
-//    if (now - lastMsg > 0) {
-//    lastMsg = now;
-//    value = analogRead(A0);
-//    int val_map = map(value,0,1024,0,100);
-//    snprintf (msg, 75, "%ld", val_map);
-//    Serial.print("Publish message: ");
-//    Serial.println(msg);
-//    client.publish("outTopic", msg); // gui du lieu len server
-//  }
+  long now = millis();
+    if (now - lastMsg > 1000) {
+    lastMsg = now;
+    value = digitalRead(D1);
+    //int val_map = map(value,0,1024,0,100);
+    snprintf (msg, 75, "%ld", value);
+    Serial.print("Publish message: ");
+    Serial.println(msg);
+    client.publish("outTopic", msg); // gui du lieu len server
+  }
 }
