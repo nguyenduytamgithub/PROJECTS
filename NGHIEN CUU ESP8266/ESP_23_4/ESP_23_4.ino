@@ -4,9 +4,9 @@
 #include <Wire.h>
 #define stick D5
 
-const char* ssid = "Galaxy K Zoom";
-const char* password = "03031997";
-const char* mqtt_server = "115.79.27.129";
+const char* ssid = "simone";
+const char* password = "1234567891011";
+const char* mqtt_server = "192.168.0.100";
 int a = 0;
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -54,16 +54,16 @@ void callback(String topic, byte* payload, unsigned int length) {
     msg_data += (char)payload[i];
   }
   Serial.println();
- if (topic == "counting/percent"){
+ if (topic == "counting/percent4"){
     Wire.beginTransmission(8); // transmit to device #8
     Wire.write(9);
     Wire.write(msg_data.toInt());        // sends five bytes             // sends one byte
     Wire.endTransmission(); 
- }if (topic == "counting/name"){
+ }if (topic == "counting/name4"){
     sent_msg(msg_data,11);
- }else if (topic == "counting/id"){
+ }else if (topic == "counting/id4"){
     sent_msg(msg_data,12);
- }else if (topic == "counting/work"){
+ }else if (topic == "counting/work4"){
    sent_msg(msg_data,13);
  }else if (topic == "counting/timeslot"){
     count = 0;  
@@ -71,7 +71,7 @@ void callback(String topic, byte* payload, unsigned int length) {
     Wire.write(15);
     Wire.write(msg_data.toInt());        // sends five bytes             // sends one byte
     Wire.endTransmission();
- }else if (topic == "counting/target"){
+ }else if (topic == "counting/target4"){
     Wire.beginTransmission(8); // transmit to device #8
     Wire.write(14);
     Wire.write(msg_data.toInt());        // sends five bytes             // sends one byte
@@ -89,12 +89,12 @@ void reconnect() {
     // Attempt to connect
     if (client.connect(clientId.c_str())) {
       Serial.println("connected");
-      client.subscribe("counting/name");
-      client.subscribe("counting/id");
-      client.subscribe("counting/work");
-      client.subscribe("counting/target");
+      client.subscribe("counting/name4");
+      client.subscribe("counting/id4");
+      client.subscribe("counting/work4");
+      client.subscribe("counting/target4");
       client.subscribe("counting/timeslot");
-      client.subscribe("counting/percent");
+      client.subscribe("counting/percent4");
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());

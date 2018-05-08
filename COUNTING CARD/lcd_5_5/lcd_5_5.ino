@@ -13,7 +13,7 @@ String ID = "ID: ";
 String Work,Name;
 int Target = EEPROM.read(TARGET_CODE);
 int Total = 0;
-float Cycle = 0;
+int Cycle = 0;
 int arr[10] = {0}; // tme slot
 // Declare which fonts we will be using
 extern uint8_t SmallFont[];
@@ -98,7 +98,8 @@ void receiveEvent(int howMany) {
     sum_of_total();
     Serial.print(sum_time);
     Serial.print(" ");
-    Serial.println(sum_time/(arr[pos_of_time_slot]-1));
+  //  Serial.println(sum_time/(arr[pos_of_time_slot]-1));
+   Serial.println(Total);
   }else if (first == 15){
     pos_of_time_slot = Wire.read();
     EEPROM.write(100, pos_of_time_slot);
@@ -145,7 +146,9 @@ void setup()
 }
 void caculator (){
   //for (int i = 0; i < 10; i++)
-  Cycle = (float)60/Target*60;  
+  //Cycle = (float)60/Target*60;  
+  if (sum_time != 0)
+  Cycle = sum_time/(arr[pos_of_time_slot]-1);
 }
 
 void sum_of_total(){
