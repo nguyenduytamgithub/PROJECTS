@@ -166,7 +166,7 @@ void active_led (){
 void active_led_2 (){
    digitalWrite(led_work,stt_led);
    if (pos_of_time_slot != 0){
-   if (arr[pos_of_time_slot-1] < Target)
+   if (arr[pos_of_time_slot-1] < Target && arr[pos_of_time_slot-1] != 0) //NEU KHUNG GIO TRUOC DO < TARGET VA KHUNG GIO TRUOC DO PHAI LAM MOI DUOC TINH
     stt_led = 1;
     else 
     stt_led = 0;
