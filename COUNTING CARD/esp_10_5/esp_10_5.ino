@@ -54,24 +54,24 @@ void callback(String topic, byte* payload, unsigned int length) {
     msg_data += (char)payload[i];
   }
   Serial.println();
- if (topic == "counting/percent"){
+ if (topic == "counting/percent1"){
     Wire.beginTransmission(8); // transmit to device #8
     Wire.write(9);
     Wire.write(msg_data.toInt());        // sends five bytes             // sends one byte
     Wire.endTransmission(); 
- }if (topic == "counting/name"){
+ }if (topic == "counting/name1"){
     sent_msg(msg_data,11);
- }else if (topic == "counting/id"){
+ }else if (topic == "counting/id1"){
     sent_msg(msg_data,12);
- }else if (topic == "counting/work"){
+ }else if (topic == "counting/work1"){
    sent_msg(msg_data,13);
- }else if (topic == "counting/timeslot"){
+ }else if (topic == "counting/timeslot" || topic == "counting/timeslot1"){
     count = 0;  
     Wire.beginTransmission(8); // transmit to device #8
     Wire.write(15);
     Wire.write(msg_data.toInt());        // sends five bytes             // sends one byte
     Wire.endTransmission();
- }else if (topic == "counting/target5"){
+ }else if (topic == "counting/target1"){
     Wire.beginTransmission(8); // transmit to device #8
     Wire.write(14);
     Wire.write(msg_data.toInt());        // sends five bytes             // sends one byte
@@ -81,7 +81,7 @@ void callback(String topic, byte* payload, unsigned int length) {
 
 void reconnect() {
   // Loop until we're reconnected
-//  while (!client.connected()) {
+ // while (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
     // Create a random client ID
     String clientId = "ESP8266Client-";
@@ -89,12 +89,13 @@ void reconnect() {
     // Attempt to connect
     if (client.connect(clientId.c_str())) {
       Serial.println("connected");
-      client.subscribe("counting/name");
-      client.subscribe("counting/id");
-      client.subscribe("counting/work");
-      client.subscribe("counting/target");
+      client.subscribe("counting/name1");
+      client.subscribe("counting/id1");
+      client.subscribe("counting/work1");
+      client.subscribe("counting/target1");
       client.subscribe("counting/timeslot");
-      client.subscribe("counting/percent");
+      client.subscribe("counting/timeslot1");
+      client.subscribe("counting/percent1");
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -122,8 +123,8 @@ void loop() {
   }
   client.loop();
   if (a == 0) {
-   // delay(3000);
-    client.publish("counting/intime", "1");
+    //delay(10000);
+    client.publish("counting/intime1", "1");
     a = 1;
   }
   stt =digitalRead(D5);

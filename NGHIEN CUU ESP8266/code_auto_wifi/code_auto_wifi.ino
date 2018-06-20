@@ -5,7 +5,7 @@
 
 
 #define PIN_LED 16
-#define PIN_BUTTON 0
+#define PIN_BUTTON D7
 
 #define LED_ON() digitalWrite(PIN_LED, HIGH)
 #define LED_OFF() digitalWrite(PIN_LED, LOW)
@@ -53,7 +53,7 @@ void setup() {
   Serial.setDebugOutput(true);
 
   pinMode(PIN_LED, OUTPUT);
-  pinMode(PIN_BUTTON, INPUT);
+  pinMode(PIN_BUTTON, INPUT_PULLUP);
   ticker.attach(1, tick);
   Serial.println("Setup done");
 }
