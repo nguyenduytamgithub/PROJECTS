@@ -1,0 +1,165 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#E3E3E5"
+    android:subtitleTextColor="@color/colorPrimaryDark">
+    <!--android:background="@color/colorPrimaryDark"-->
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="#000"
+        android:scaleType="fitXY"
+        android:src="@drawable/nenedit" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:id="@+id/titletwocolor"
+            android:background="#0000"
+            android:scaleType="fitXY"
+            android:src="@drawable/title2" />
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="#0000"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/logoconvert" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/titletwocolor"
+            android:text="Chất lượng thay lời nói"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="120dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:id="@+id/chucnang"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="G-Box - Thùng gạo IoT"
+            android:textColor="#eee"
+            android:layout_marginLeft="120dp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:id="@+id/relativekhungtrungtam"
+        android:layout_below="@+id/relativeLayout2">
+        <ImageView
+            android:id="@+id/tuigao"
+            android:layout_width="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_height="100dp"
+            android:src="@drawable/tuigao"
+            android:scaleType="fitXY"/>
+        <ImageButton
+            android:id="@+id/muagao"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/buttontrangchinh"
+            android:layout_marginTop="20dp"
+            android:background="#0000"
+            android:layout_below="@+id/tuigao"/>
+        <ImageButton
+            android:id="@+id/gaocuatoi"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/buttontrangchinh"
+            android:layout_marginTop="5dp"
+            android:background="#0000"
+            android:layout_below="@+id/muagao"/>
+        <ImageButton
+            android:id="@+id/thongtincanhan"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/buttontrangchinh"
+            android:layout_marginTop="5dp"
+            android:background="#0000"
+            android:layout_below="@+id/gaocuatoi"/>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/thongtincanhan"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="132dp"
+            android:layout_marginTop="5dp">
+
+            <ImageButton
+                android:id="@+id/caidatwifi"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:background="#0000"
+                android:scaleType="fitXY"
+                android:src="@drawable/buttontrangchinh" />
+        </FrameLayout>
+
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="30dp"
+            android:background="#0000"
+            android:scaleType="fitXY"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+
+            android:src="@drawable/home" />
+
+        <TextView
+            android:id="@+id/version_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="17dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:textStyle="italic" />
+    </RelativeLayout>
+
+</RelativeLayout>

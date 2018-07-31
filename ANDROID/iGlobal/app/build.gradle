@@ -26,4 +26,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
+<<<<<<< HEAD
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.caverock:androidsvg:1.2.1'
+=======
+>>>>>>> adc6d2d864a712b5d1cd1dc43346af6fbc63e25c
 }

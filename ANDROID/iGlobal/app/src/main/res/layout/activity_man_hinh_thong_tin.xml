@@ -6,6 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".man_hinh_thong_tin">
 
+<<<<<<< HEAD
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:id="@+id/relLayout_img">
+        <ImageView
+            android:id="@+id/imgshow"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            app:srcCompat="@drawable/anh" />
+
+
+        <TextView
+            android:id="@+id/text_vt_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imgshow"
+            android:layout_centerHorizontal="true"
+            android:textColor="#3088ba"
+            android:textSize="20dp"
+            android:textStyle="italic"
+            tools:ignore="UnknownId" />
+        </RelativeLayout>
+=======
     <RelativeLayout
         android:id="@+id/img_show"
         android:layout_width="match_parent"
@@ -15,6 +41,7 @@
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="81dp">
 
+>>>>>>> adc6d2d864a712b5d1cd1dc43346af6fbc63e25c
         <ImageView
             android:id="@+id/ic_back_view"
             android:layout_width="50dp"
@@ -23,18 +50,114 @@
             android:layout_alignParentEnd="true"
             android:layout_marginBottom="40dp"
             android:layout_marginEnd="40dp"
+<<<<<<< HEAD
+            android:src="@drawable/ic_back_view"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/relLayout_img"
+            android:id="@+id/scroll_screen">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/text_qg_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/text_qg"
+            android:layout_marginStart="191dp"
+            android:textColor="#34383b"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/image_flag"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignTop="@+id/text_qk"
+                            android:layout_marginStart="191dp" />
+
+
+        <TextView
+            android:id="@+id/text_td_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/text_qg_input"
+            android:layout_alignTop="@+id/text_td"
+            android:textColor="#34383b"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_dt_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/text_qg_input"
+            android:layout_alignTop="@+id/text_dt"
+            android:textColor="#34383b"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_kh_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/text_qg_input"
+            android:layout_alignTop="@+id/text_kh"
+            android:textColor="#34383b"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_ds_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/text_qg_input"
+            android:layout_alignTop="@+id/text_ds"
+            android:textColor="#34383b"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_gt_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/text_qg_input"
+            android:layout_alignTop="@+id/text_gt"
+            android:textColor="#34383b"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+=======
             android:src="@drawable/ic_back_view" />
+>>>>>>> adc6d2d864a712b5d1cd1dc43346af6fbc63e25c
 
         <TextView
             android:id="@+id/text_qg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+<<<<<<< HEAD
+            android:layout_alignStart="@+id/text_qk"
+            android:layout_marginTop="100dp"
+            android:text="QUỐC GIA:"
+            android:textColor="#3088ba"
+            android:textSize="20dp"
+=======
             android:layout_marginStart="50dp"
             android:layout_marginTop="300dp"
             android:text="QUỐC GIA:"
             android:textColor="#3088ba"
             android:textSize="25dp"
+>>>>>>> adc6d2d864a712b5d1cd1dc43346af6fbc63e25c
             android:textStyle="bold" />
 
         <TextView
@@ -42,11 +165,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+<<<<<<< HEAD
+            android:layout_alignStart="@+id/text_td"
+            android:layout_marginTop="50dp"
+            android:text="QUỐC KỲ:"
+            android:textColor="#3088ba"
+            android:textSize="20dp"
+=======
             android:layout_marginStart="50dp"
             android:layout_marginTop="350dp"
             android:text="QUỐC KỲ:"
             android:textColor="#3088ba"
             android:textSize="25dp"
+>>>>>>> adc6d2d864a712b5d1cd1dc43346af6fbc63e25c
             android:textStyle="bold" />
 
         <TextView
@@ -54,6 +185,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+<<<<<<< HEAD
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="150dp"
+            android:text="THỦ ĐÔ:"
+            android:textColor="#3088ba"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_dt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="200dp"
+            android:text="DIỆN TÍCH:"
+            android:textColor="#3088ba"
+            android:textSize="20dp"
+=======
             android:layout_marginStart="50dp"
             android:layout_marginTop="400dp"
             android:text="THỦ ĐÔ:"
@@ -71,6 +221,7 @@
             android:text="DIỆN TÍCH:"
             android:textColor="#3088ba"
             android:textSize="25dp"
+>>>>>>> adc6d2d864a712b5d1cd1dc43346af6fbc63e25c
             android:textStyle="bold" />
 
         <TextView
@@ -78,11 +229,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+<<<<<<< HEAD
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="250dp"
+            android:text="KHU VỰC:"
+            android:textColor="#3088ba"
+            android:textSize="20dp"
+=======
             android:layout_marginStart="50dp"
             android:layout_marginTop="500dp"
             android:text="KHÍ HẬU:"
             android:textColor="#3088ba"
             android:textSize="25dp"
+>>>>>>> adc6d2d864a712b5d1cd1dc43346af6fbc63e25c
             android:textStyle="bold" />
 
         <TextView
@@ -90,11 +249,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+<<<<<<< HEAD
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="300dp"
+            android:text="DÂN SỐ:"
+            android:textColor="#3088ba"
+            android:textSize="20dp"
+=======
             android:layout_marginStart="50dp"
             android:layout_marginTop="550dp"
             android:text="DÂN SỐ:"
             android:textColor="#3088ba"
             android:textSize="25dp"
+>>>>>>> adc6d2d864a712b5d1cd1dc43346af6fbc63e25c
             android:textStyle="bold" />
 
         <TextView
@@ -102,6 +269,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+<<<<<<< HEAD
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="350dp"
+            android:text="GIỚI THIỆU:"
+            android:textColor="#3088ba"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+
+                        <TextView
+            android:id="@+id/text_info"
+            android:layout_width="581dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/text_gt"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginStart="30dp"
+            android:text="@string/text_khtn"
+            android:textSize="18dp" />
+
+                </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+    </RelativeLayout>
+=======
             android:layout_marginStart="50dp"
             android:layout_marginTop="600dp"
             android:text="GIỚI THIỆU:"
@@ -120,3 +314,4 @@
 
 
 </RelativeLayout>
+>>>>>>> adc6d2d864a712b5d1cd1dc43346af6fbc63e25c
