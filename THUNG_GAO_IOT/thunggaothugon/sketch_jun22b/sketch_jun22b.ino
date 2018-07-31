@@ -4,7 +4,7 @@
 #include <ESP_EEPROM.h>
 #define MIN 1.2
 #define HIGH_MIN 3
-#define id_box 1234
+#define id_box 1235
 #define HET "sắp hết"
 #define CON "còn gạo"
 #define YEUCAU "yêu cầu"
@@ -16,19 +16,18 @@ const char* mqtt_server = "192.168.20.127";
 int S = 400;
 int h = 28;
 int count_wakeup; //eeprom count
-#define trig D6
-#define echo D5
-#define button D7
-#define power_sensor D8
+#define trig D7
+#define echo D6
+//#define button D7
+#define power_sensor D5
 bool flag = false;
-bool power_shutdown = false;
 String trangthai = "";
 WiFiClient espClient;
 PubSubClient client(espClient);
 long lastMsg = 0;
 char msg[50];
-unsigned long time_push = 0;
-unsigned long timesecond = 0;
+unsigned long time_publish = 0;
+unsigned long timewait = 0;
 void setup_wifi() {
 
   delay(10);
@@ -71,8 +70,8 @@ void callback(String topic, byte* payload, unsigned int length) {
       count_wakeup ++;
       EEPROM.put(33, count_wakeup);
       EEPROM.commit();
-      ESP.deepSleep(0xffffffff);
-      //ESP.deepSleep(5e6);
+      //ESP.deepSleep(0xffffffff);
+      ESP.deepSleep(10e6);
     }
   }
 }
@@ -94,7 +93,7 @@ void reconnect() {
       Serial.print(client.state());
       Serial.println(" try again in 5 seconds");
       // Wait 5 seconds before retrying
-      delay(5000);
+      delay(1000);
     }
   }
 }
@@ -107,9 +106,8 @@ void setup() {
   client.setCallback(callback);
   pinMode(trig, OUTPUT);
   pinMode(echo, INPUT);
-  pinMode(button, INPUT_PULLUP);
+//  pinMode(button, INPUT_PULLUP);
   pinMode(power_sensor, OUTPUT);
-  Serial.setTimeout(2000);
   digitalWrite(power_sensor, 1);
 }
 int get_distance() {
@@ -137,7 +135,7 @@ int get_distance() {
       disSave = disSave;
     else
       disSave = distance;
-    delay(50);
+    delay(10);
     arr[i] = disSave;
     /* In kết quả ra Serial Monitor */
   }
@@ -198,16 +196,36 @@ void loop() {
     reconnect();
   }
   client.loop();
-  if (power_shutdown) {
-
-  }
+  
   int distance = get_distance ();
   float soki = caculator(distance);
+  if (millis() - time_publish > 2000){
+  StaticJsonBuffer<200> jsonBuffer;
+  JsonObject& root = jsonBuffer.createObject();
+    root["id_box"] = id_box;
+    root["soki"] = soki;
+    root["pin"] = EEPROM.get(33, count_wakeup);
+    root["trangthai"] = trangthai;
+    char jsonChar[100];
+    root.printTo(jsonChar);
+    client.publish("cntn/iot/esp/log", jsonChar);
+  time_publish = millis();
+  }
+  if (millis() - timewait > 15000){
+      EEPROM.get(33, count_wakeup);
+      count_wakeup ++;
+      EEPROM.put(33, count_wakeup);
+      EEPROM.commit();
+      //ESP.deepSleep(0xffffffff);
+      ESP.deepSleep(10e6);
+      timewait = millis();
+  }
+  
   //  Serial.print(soki);
   //  Serial.println("  g");
-  if (digitalRead(button) == 0) {
-    flag = true;
-  }
+  //if (digitalRead(button) == 0) {
+  //  flag = true;
+  //}
   //  if (!checkRiceHigh(distance)){
   //    //if (!checkRice(soki)){
   //    StaticJsonBuffer<200> jsonBuffer;
@@ -218,24 +236,12 @@ void loop() {
   //    root.printTo(jsonChar);
   //    client.publish("cntn/iot/esp/thongbao", jsonChar);
   //  }
-  StaticJsonBuffer<200> jsonBuffer;
-  JsonObject& root = jsonBuffer.createObject();
-  if (millis() - time_push > 3000) {
-    root["id_box"] = id_box;
-    root["soki"] = soki;
-    root["pin"] = EEPROM.get(33, count_wakeup);
-    root["trangthai"] = trangthai;
-    char jsonChar[100];
-    root.printTo(jsonChar);
-    time_push = millis();
-    //   Serial.println(jsonChar);
-    client.publish("cntn/iot/esp/log", jsonChar);
-  }
-  Serial.println(digitalRead(button));
-  if (digitalRead(button) == 0 && (millis() - timesecond > 2000)) {
-    EEPROM.put(33, 0);
-    EEPROM.commit();
-    ESP.deepSleep(2e6);
-  } else if (digitalRead(button) == 1)
-    timesecond = millis();
+  
+//  Serial.println(digitalRead(button));
+//  if (digitalRead(button) == 0 && (millis() - timesecond > 2000)) {
+//    EEPROM.put(33, 0);
+//    EEPROM.commit();
+//    ESP.deepSleep(2e6);
+//  } else if (digitalRead(button) == 1)
+//    timesecond = millis();
 }
