@@ -4,3 +4,9 @@ Kính thông minh
 https://www.youtube.com/watch?v=lkl6yVauCKg
 kết nối 2 bluetooth
 https://www.youtube.com/watch?v=TQ0HsqG-zUM&feature=youtu.be
+mqtt
+http://www.instructables.com/id/Installing-MQTT-BrokerMosquitto-on-Raspberry-Pi/
+mqtt ui pretty
+https://github.com/node-red/node-red-dashboard
+icon
+https://klarsys.github.io/angular-material-icons/

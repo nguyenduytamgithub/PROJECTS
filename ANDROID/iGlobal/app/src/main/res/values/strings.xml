@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">i-Global</string>
     <string name="api_map_google">AIzaSyDaviR7qbSy5EdoPLnCsSkXZ8B9ebuu6wA</string>
+<<<<<<< HEAD
+    <string name="text_khtn">Ho Chi Minh City University of Science was re-founded in March 1996 following a split from Đại học Tổng hợp. The school has since been a member university of Vietnam National University, Ho Chi Minh City.</string>
+    <string name="linkCountry">https://restcountries.eu/rest/v2/</string>
+=======
+>>>>>>> adc6d2d864a712b5d1cd1dc43346af6fbc63e25c
 </resources>
