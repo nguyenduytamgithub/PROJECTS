@@ -5,17 +5,17 @@
 #include <ESP_EEPROM.h>
 //define
 #define id_box 12345 // ma thung
-#define TIME_SLEEP 0xffffffff 
+#define TIME_SLEEP 10e6//0xffffffff 
 #define TIME_PUBLISH 2000 // khoang cach gui
 #define TIME_WAIT 15000 // thoi gian toi da ket noi wifi
 #define VCC_ADJ 1.096 //const do pin
-#define EEPROM_COUNT_PUSH 222 // so lan da gui
-#define EEPROM_COUNT_WAKEUP 111 // so lan ngu day
+#define EEPROM_COUNT_PUSH 444 // so lan da gui
+#define EEPROM_COUNT_WAKEUP 333 // so lan ngu day
 #define HIGH_MIN 3 // can sua cho nay de duoc 2 kg
 #define HET "sắp hết"
 #define CON "còn gạo"
 #define YEUCAU "yêu cầu"
-#define MAGIC_NUMBER 21 //so lan ngu toi da
+#define MAGIC_NUMBER 2 //1 //so lan ngu toi da
 
 ADC_MODE(ADC_VCC);
 WiFiClient espClient;
@@ -61,6 +61,16 @@ void setup_wifi() {
   Serial.println(WiFi.localIP());
   #endif
 }
+//=============== NGU NGAY SAU GUI HOAC OVER TIME ================================
+void remember_to_sleep(){
+      EEPROM.get(EEPROM_COUNT_WAKEUP, count_wakeup);
+      count_wakeup ++;
+      if (count_wakeup > MAGIC_NUMBER) count_wakeup = 1;
+      EEPROM.put(EEPROM_COUNT_WAKEUP, count_wakeup);
+      EEPROM.commit();
+      Serial.println("sent ok sleep");
+      ESP.deepSleep(TIME_SLEEP);
+}
 //================ CALL BACK VA TIEP NHAN LENH NGU TU SERVER ========================
 void callback(String topic, byte* payload, unsigned int length) {
   Serial.print("Message arrived [");
@@ -78,43 +88,25 @@ void callback(String topic, byte* payload, unsigned int length) {
     if (jsReceive["id_box"] == id_box) {
       flag = false;
       if (jsReceive["time_up"] == "ok")
-        sleep_then_push();
+        remember_to_sleep();
       else { //truong hop so ngoai 21 - 3
         int time_up = jsReceive["time_up"];
         count_wakeup = MAGIC_NUMBER - time_up;
         EEPROM.put(EEPROM_COUNT_WAKEUP, count_wakeup);
         EEPROM.commit();
-        sleep_then_push();
+        remember_to_sleep();
         }
     }
   }
 }
-//================ NGU KHI KHONG KET NOI HOAC KHONG GUI DUOC =========
-void remember_to_sleep(){
+//=============== VOID KIEM TRA XEM CAC TINH NANG QUA GIO CHUA ===
+void check_time_wait(){ // loop, mqtt, read sensor use this function
   if (millis() - timewait > TIME_WAIT){
-      EEPROM.get(EEPROM_COUNT_WAKEUP, count_wakeup);
-      count_wakeup ++;
-      if (count_wakeup > MAGIC_NUMBER) count_wakeup = 1;
-      EEPROM.put(EEPROM_COUNT_WAKEUP, count_wakeup);
-      EEPROM.commit();
+      remember_to_sleep(); // vi co the bi vong while ma chua ra duoc loop
       timewait = millis();
-      Serial.println("sent fail sleep");
-      //ESP.deepSleep(0xffffffff);
-      ESP.deepSleep(TIME_SLEEP);
-      
-    }
+   }
 }
-//=============== NGU NGAY SAU GUI ================================
-void sleep_then_push(){
-      EEPROM.get(EEPROM_COUNT_WAKEUP, count_wakeup);
-      count_wakeup ++;
-      if (count_wakeup > MAGIC_NUMBER) count_wakeup = 1;
-      EEPROM.put(EEPROM_COUNT_WAKEUP, count_wakeup);
-      EEPROM.commit();
-      Serial.println("sent ok sleep");
-      //ESP.deepSleep(0xffffffff);
-      ESP.deepSleep(TIME_SLEEP);
-}
+
 //=============== RECONNCET VA NGU NEU QUA THOI GIAN =======
 void reconnect() {
   // Loop until we're reconnected
@@ -138,13 +130,13 @@ void reconnect() {
       delay(100);
       
     }
-    remember_to_sleep();
+   check_time_wait(); // xem qua gio chua
   }
 }
 //==================== VOID DI NGU NEU CHUA DU MAGIC ========
 void check_daily(){
   if (EEPROM.get(EEPROM_COUNT_WAKEUP, count_wakeup) != MAGIC_NUMBER)
-    sleep_then_push();
+    remember_to_sleep();
 }
 //======================== VOID EEPROM SO LAN PUSH =========
 void eeprom_push(){
@@ -153,8 +145,10 @@ void eeprom_push(){
     EEPROM.put(EEPROM_COUNT_PUSH, count_push);
     EEPROM.commit();
 }
+
 //============== INT TINH KHOANG CACH VA LOC NHIEU ============
 int get_distance() {
+  digitalWrite(power_sensor, 1); // mở chân kích nguồn
   unsigned int distance;
   unsigned int disSave = 0;
   unsigned long duration; // biến đo thời gian
@@ -182,6 +176,7 @@ int get_distance() {
     delay(10);
     arr[i] = disSave;
     /* In kết quả ra Serial Monitor */
+    check_time_wait(); // kiem tra xem qua gio chua
   }
   for (int i = 0; i < 20; i++) {
     brr[arr[i]]++;
@@ -198,6 +193,7 @@ int get_distance() {
       Serial.print(disSave);
       Serial.println("cm");
   #endif
+  digitalWrite(power_sensor, 0); // tắt sung khếch đại
   return disSave;
 }
 //================ VOID TINH THE TICH ================
@@ -226,9 +222,10 @@ bool checkRiceHigh (int high) {
     return true;
   }
 }
-//=================== VOID GUI DATA ======================
-void push_data(){
-  if (millis() - time_publish > TIME_PUBLISH){
+
+// ==================== KET NOI WIFI ======================
+
+char read_data(){
   int distance = get_distance ();
   float soki = caculator(distance);
   eeprom_push(); // NEU GUI DU LIEU LA EEPROM SO LAN PUSH
@@ -239,21 +236,36 @@ void push_data(){
     root["pin"] = (float)ESP.getVcc()* VCC_ADJ;
     root["trangthai"] = EEPROM.get(EEPROM_COUNT_PUSH, count_push);
     char jsonChar[100];
-    root.printTo(jsonChar);
-    client.publish("cntn/iot/esp/log", jsonChar);
-  time_publish = millis();
-  }
+   return root.printTo(jsonChar);  
 }
-// ==================== KET NOI WIFI ======================
-
+//=================== VOID GUI DATA ======================
+void push_data(char* jsonChar){
+    client.publish("cntn/iot/esp/log", jsonChar);
+}
+//=================== VOID ENBABLE WIFI =====
+void enable_wifi (){
+  WiFi.forceSleepWake();
+  WiFi.mode(WIFI_STA);
+  setup_wifi();
+}
+// ================== VOID DISABLE WIFI =====
+void disable_wifi() {
+  WiFi.forceSleepBegin();  // send wifi to sleep to reduce power consumption
+  yield();
+}
 //===================== VOID SETUP ========================
 void setup() {
+  disable_wifi();
   Serial.begin(115200);
   EEPROM.begin(512);
   check_daily();
   pinMode(trig, OUTPUT);
   pinMode(echo, INPUT);
   pinMode(power_sensor, OUTPUT);
+  char jsonChar = read_data ();
+  enable_wifi();
+  reconnect();
+  push_data(&jsonChar);
 }
 //======================  VOID LOOP =====================
 void loop() {
@@ -261,7 +273,5 @@ void loop() {
 //    reconnect();
 //  }
 //  client.loop();
-  push_data();
-  remember_to_sleep(); // van ngu neu nhu khong phan hoi server
-
+ check_time_wait(); // xem qua gio chua
 }
