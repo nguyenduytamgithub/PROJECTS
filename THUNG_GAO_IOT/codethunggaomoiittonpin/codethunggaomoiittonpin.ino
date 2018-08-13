@@ -4,18 +4,19 @@
 #include<ArduinoJson.h>
 #include <ESP_EEPROM.h>
 //define
-#define id_box 12345 // ma thung
-#define TIME_SLEEP 10e6//0xffffffff 
+#define id_box 3397 // ma thung
+#define TIME_SLEEP 0xffffffff 
 #define TIME_PUBLISH 2000 // khoang cach gui
 #define TIME_WAIT 15000 // thoi gian toi da ket noi wifi
 #define VCC_ADJ 1.096 //const do pin
-#define EEPROM_COUNT_PUSH 444 // so lan da gui
-#define EEPROM_COUNT_WAKEUP 333 // so lan ngu day
+#define EEPROM_COUNT_PUSH 400 // so lan da gui
+#define EEPROM_COUNT_WAKEUP 300 // so lan ngu day
 #define HIGH_MIN 3 // can sua cho nay de duoc 2 kg
 #define HET "sắp hết"
 #define CON "còn gạo"
 #define YEUCAU "yêu cầu"
-#define MAGIC_NUMBER 2 //1 //so lan ngu toi da
+#define MAGIC_NUMBER 21 //1 //so lan ngu toi da
+//#define SERIAL_DEBUG
 
 ADC_MODE(ADC_VCC);
 WiFiClient espClient;
@@ -43,18 +44,16 @@ unsigned long timewait = 0;
 void setup_wifi() {
   delay(10);
   WiFi.begin(ssid, password);
+  randomSeed(micros());
   #ifdef SERIAL_DEBUG
   // We start by connecting to a WiFi network
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
-  #endif
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
   }
-  randomSeed(micros());
-  #ifdef SERIAL_DEBUG
   Serial.println("");
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
@@ -68,20 +67,22 @@ void remember_to_sleep(){
       if (count_wakeup > MAGIC_NUMBER) count_wakeup = 1;
       EEPROM.put(EEPROM_COUNT_WAKEUP, count_wakeup);
       EEPROM.commit();
-      Serial.println("sent ok sleep");
+      #ifdef SERIAL_DEBUG
+      Serial.println("sleeping");
+      #endif
       ESP.deepSleep(TIME_SLEEP);
+      yield();
 }
 //================ CALL BACK VA TIEP NHAN LENH NGU TU SERVER ========================
 void callback(String topic, byte* payload, unsigned int length) {
-  Serial.print("Message arrived [");
-  Serial.print(topic);
-  Serial.print("] ");
   String msg_payload = "";
   for (int i = 0; i < length; i++) {
+    #ifdef SERIAL_DEBUG
     Serial.print((char)payload[i]);
+    #endif
     msg_payload += ((char)payload[i]);
   }
-  Serial.println();
+  //Serial.println();
   if (topic == "ServerToEsp") {
     StaticJsonBuffer<500> jsonBufferReceive;
     JsonObject& jsReceive = jsonBufferReceive.parseObject((char*)payload);
@@ -102,33 +103,32 @@ void callback(String topic, byte* payload, unsigned int length) {
 //=============== VOID KIEM TRA XEM CAC TINH NANG QUA GIO CHUA ===
 void check_time_wait(){ // loop, mqtt, read sensor use this function
   if (millis() - timewait > TIME_WAIT){
-      remember_to_sleep(); // vi co the bi vong while ma chua ra duoc loop
+      #ifdef SERIAL_DEBUG
+      Serial.print("Sent fail");
+      #endif
+      remember_to_sleep(); 
       timewait = millis();
    }
 }
-
 //=============== RECONNCET VA NGU NEU QUA THOI GIAN =======
 void reconnect() {
   // Loop until we're reconnected
   while (!client.connected()) {
-    Serial.print("Attempting MQTT connection...");
-    // Create a random client ID
     String clientId = "ESP8266Client-";
     clientId += String(random(0xffff), HEX);
     // Attempt to connect
     if (client.connect(clientId.c_str())) {
-      Serial.println("connected");
+      #ifdef SERIAL_DEBUG
+      Serial.print("connected");
+      #endif
       // Once connected, publish an announcement...
       client.subscribe("ServerToEsp");
     } else {
       #ifdef SERIAL_DEBUG
-      Serial.print("failed, rc=");
-      Serial.print(client.state());
-      Serial.println(" try again in 100 milliseconds");
+      Serial.print("failed, Reconnect 100ms");
       #endif
       // Wait 100 seconds before retrying
-      delay(100);
-      
+      delay(10);     
     }
    check_time_wait(); // xem qua gio chua
   }
@@ -178,6 +178,7 @@ int get_distance() {
     /* In kết quả ra Serial Monitor */
     check_time_wait(); // kiem tra xem qua gio chua
   }
+  digitalWrite(power_sensor, 0); // tắt sung khếch đại
   for (int i = 0; i < 20; i++) {
     brr[arr[i]]++;
   }
@@ -190,10 +191,10 @@ int get_distance() {
     }
   }
   #ifdef SERIAL_DEBUG
+      Serial.begin(115200);
       Serial.print(disSave);
       Serial.println("cm");
   #endif
-  digitalWrite(power_sensor, 0); // tắt sung khếch đại
   return disSave;
 }
 //================ VOID TINH THE TICH ================
@@ -223,12 +224,16 @@ bool checkRiceHigh (int high) {
   }
 }
 
-// ==================== KET NOI WIFI ======================
+// ==================== DOC DATA VA TINH SO KI ======================
 
-char read_data(){
+float read_data(){
   int distance = get_distance ();
   float soki = caculator(distance);
   eeprom_push(); // NEU GUI DU LIEU LA EEPROM SO LAN PUSH
+  return soki;  
+}
+//=================== VOID GUI DATA ======================
+void push_data(float soki){
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject& root = jsonBuffer.createObject();
     root["id_box"] = id_box;
@@ -236,17 +241,17 @@ char read_data(){
     root["pin"] = (float)ESP.getVcc()* VCC_ADJ;
     root["trangthai"] = EEPROM.get(EEPROM_COUNT_PUSH, count_push);
     char jsonChar[100];
-   return root.printTo(jsonChar);  
-}
-//=================== VOID GUI DATA ======================
-void push_data(char* jsonChar){
+    root.printTo(jsonChar); 
     client.publish("cntn/iot/esp/log", jsonChar);
 }
 //=================== VOID ENBABLE WIFI =====
 void enable_wifi (){
   WiFi.forceSleepWake();
   WiFi.mode(WIFI_STA);
+  yield();
   setup_wifi();
+  client.setServer(mqtt_server, 1883);
+  client.setCallback(callback);
 }
 // ================== VOID DISABLE WIFI =====
 void disable_wifi() {
@@ -256,22 +261,18 @@ void disable_wifi() {
 //===================== VOID SETUP ========================
 void setup() {
   disable_wifi();
-  Serial.begin(115200);
   EEPROM.begin(512);
   check_daily();
   pinMode(trig, OUTPUT);
   pinMode(echo, INPUT);
   pinMode(power_sensor, OUTPUT);
-  char jsonChar = read_data ();
+  float soki = read_data ();
   enable_wifi();
   reconnect();
-  push_data(&jsonChar);
+  push_data(soki);
 }
 //======================  VOID LOOP =====================
 void loop() {
-//  if (!client.connected()) {
-//    reconnect();
-//  }
-//  client.loop();
+  client.loop();
  check_time_wait(); // xem qua gio chua
 }

@@ -1,157 +1,171 @@
+// libraries
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 #include<ArduinoJson.h>
 #include <ESP_EEPROM.h>
-ADC_MODE(ADC_VCC);
-#define TIME_SLEEP 10e6//0xffffffff
-#define TIME_PUBLISH 2000
-#define TIME_WAIT 15000
-#define VCC_ADJ 1.096
-#define EEPROM_COUNT_PUSH 222
-#define EEPROM_COUNT_WAKEUP 111
-#define MIN 2
+
+//define
+#define id_box 12346 // ma thung
+#define TIME_SLEEP 10e4//0xffffffff 
+#define TIME_PUBLISH 2000 // khoang cach gui
+#define TIME_WAIT 15000 // thoi gian toi da ket noi wifi
+#define VCC_ADJ 1.096 //const do pin
+#define EEPROM_COUNT_PUSH 444 // so lan da gui
+#define EEPROM_COUNT_WAKEUP 333 // so lan ngu day
 #define HIGH_MIN 3 // can sua cho nay de duoc 2 kg
-#define id_box 1236
 #define HET "sắp hết"
 #define CON "còn gạo"
 #define YEUCAU "yêu cầu"
-#define MAGIC_NUMBER 2 //so quyet dinh so lan ngu
-
-
+#define MAGIC_NUMBER 2 //1 //so lan ngu toi da
+//#define SERIAL_DEBUG
+#define ADC_MIN 0.5
+#define ADC_ALERT 2.5
+ADC_MODE(ADC_VCC);
+extern "C" {
+#include "user_interface.h"
+}
+WiFiClient espClient;
+PubSubClient client(espClient);
+// wifi va server
 const char* ssid = "GE";
 const char* password = "1234567891011";
 const char* mqtt_server = "192.168.20.127";
+// bien toan cuc
 int S = 400;
 int h = 28;
-int count_wakeup;  
-int count_push;
-#define trig D7
-#define echo D6
-//#define button D7
-#define power_sensor D5
 bool flag = false;
 String trangthai = "";
-WiFiClient espClient;
-PubSubClient client(espClient);
+int count_wakeup;  
+int count_push;
 long lastMsg = 0;
 char msg[50];
+int valR; // bien reset
 unsigned long time_publish = 0;
 unsigned long timewait = 0;
+unsigned long time_count_reset = 0;
+// gpio su dung
+#define trig D7
+#define echo D6
+#define power_sensor D5
+
+int getResetReason() {
+  rst_info* ri = system_get_rst_info();
+  if (ri == NULL)
+    return -1;
+
+  return ri->reason;
+}
+
+
 //============== HAM CAI DAT WIFI =============
 void setup_wifi() {
   delay(10);
+  WiFi.begin(ssid, password);
+  randomSeed(micros());
+  #ifdef SERIAL_DEBUG
   // We start by connecting to a WiFi network
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
-  WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
   }
-  randomSeed(micros());
   Serial.println("");
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
+  #endif
+}
+//=============== NGU NGAY SAU GUI HOAC OVER TIME ================================
+void remember_to_sleep(){
+      EEPROM.get(EEPROM_COUNT_WAKEUP, count_wakeup);
+      count_wakeup ++;
+      if (count_wakeup > MAGIC_NUMBER) count_wakeup = 1;
+      EEPROM.put(EEPROM_COUNT_WAKEUP, count_wakeup);
+      EEPROM.commit();
+      #ifdef SERIAL_DEBUG
+      Serial.println("sleeping");
+      #endif
+      ESP.deepSleep(TIME_SLEEP);
+      yield();
 }
 //================ CALL BACK VA TIEP NHAN LENH NGU TU SERVER ========================
 void callback(String topic, byte* payload, unsigned int length) {
-  Serial.print("Message arrived [");
-  Serial.print(topic);
-  Serial.print("] ");
   String msg_payload = "";
   for (int i = 0; i < length; i++) {
+    #ifdef SERIAL_DEBUG
     Serial.print((char)payload[i]);
+    #endif
     msg_payload += ((char)payload[i]);
   }
-  Serial.println();
+  //Serial.println();
   if (topic == "ServerToEsp") {
     StaticJsonBuffer<500> jsonBufferReceive;
     JsonObject& jsReceive = jsonBufferReceive.parseObject((char*)payload);
     if (jsReceive["id_box"] == id_box) {
       flag = false;
       if (jsReceive["time_up"] == "ok")
-        sleep_then_push();
+        remember_to_sleep();
       else { //truong hop so ngoai 21 - 3
         int time_up = jsReceive["time_up"];
         count_wakeup = MAGIC_NUMBER - time_up;
         EEPROM.put(EEPROM_COUNT_WAKEUP, count_wakeup);
         EEPROM.commit();
-        sleep_then_push();
+        remember_to_sleep();
         }
     }
   }
 }
-//================ NGU KHI KHONG KET NOI HOAC KHONG GUI DUOC =========
-void remember_to_sleep(){
+//=============== VOID KIEM TRA XEM CAC TINH NANG QUA GIO CHUA ===
+void check_time_wait(){ // loop, mqtt, read sensor use this function
   if (millis() - timewait > TIME_WAIT){
-      EEPROM.get(EEPROM_COUNT_WAKEUP, count_wakeup);
-      count_wakeup ++;
-      if (count_wakeup > MAGIC_NUMBER) count_wakeup = 1;
-      EEPROM.put(EEPROM_COUNT_WAKEUP, count_wakeup);
-      EEPROM.commit();
+      #ifdef SERIAL_DEBUG
+      Serial.print("Sent fail");
+      #endif
+      remember_to_sleep(); 
       timewait = millis();
-      Serial.println("sent fail sleep");
-      //ESP.deepSleep(0xffffffff);
-      ESP.deepSleep(TIME_SLEEP);
-      
-    }
-}
-//=============== NGU NGAY SAU GUI ================================
-void sleep_then_push(){
-      EEPROM.get(EEPROM_COUNT_WAKEUP, count_wakeup);
-      count_wakeup ++;
-      if (count_wakeup > MAGIC_NUMBER) count_wakeup = 1;
-      EEPROM.put(EEPROM_COUNT_WAKEUP, count_wakeup);
-      EEPROM.commit();
-      Serial.println("sent ok sleep");
-      //ESP.deepSleep(0xffffffff);
-      ESP.deepSleep(TIME_SLEEP);
+   }
 }
 //=============== RECONNCET VA NGU NEU QUA THOI GIAN =======
 void reconnect() {
   // Loop until we're reconnected
   while (!client.connected()) {
-    Serial.print("Attempting MQTT connection...");
-    // Create a random client ID
     String clientId = "ESP8266Client-";
     clientId += String(random(0xffff), HEX);
     // Attempt to connect
     if (client.connect(clientId.c_str())) {
-      Serial.println("connected");
+      #ifdef SERIAL_DEBUG
+      Serial.print("connected");
+      #endif
       // Once connected, publish an announcement...
       client.subscribe("ServerToEsp");
     } else {
-      Serial.print("failed, rc=");
-      Serial.print(client.state());
-      Serial.println(" try again in 100 milliseconds");
-      // Wait 5 seconds before retrying
-      delay(100);
+      #ifdef SERIAL_DEBUG
+      Serial.print("failed, Reconnect 100ms");
+      #endif
+      // Wait 100 seconds before retrying
+      delay(10);     
     }
-    remember_to_sleep();
+   check_time_wait(); // xem qua gio chua
   }
 }
 //==================== VOID DI NGU NEU CHUA DU MAGIC ========
 void check_daily(){
   if (EEPROM.get(EEPROM_COUNT_WAKEUP, count_wakeup) != MAGIC_NUMBER)
-    sleep_then_push();
+    remember_to_sleep();
 }
-//===================== VOID SETUP ========================
-void setup() {
-  Serial.begin(115200);
-  EEPROM.begin(512);
-  check_daily();
-  setup_wifi();
-  client.setServer(mqtt_server, 1883);
-  client.setCallback(callback);
-  pinMode(trig, OUTPUT);
-  pinMode(echo, INPUT);
-  pinMode(power_sensor, OUTPUT);
-  digitalWrite(power_sensor, 1);
+//======================== VOID EEPROM SO LAN PUSH =========
+void eeprom_push(){
+    EEPROM.get(EEPROM_COUNT_PUSH, count_push);
+    count_push++;
+    EEPROM.put(EEPROM_COUNT_PUSH, count_push);
+    EEPROM.commit();
 }
+
 //============== INT TINH KHOANG CACH VA LOC NHIEU ============
 int get_distance() {
+  digitalWrite(power_sensor, 1); // mở chân kích nguồn
   unsigned int distance;
   unsigned int disSave = 0;
   unsigned long duration; // biến đo thời gian
@@ -179,7 +193,9 @@ int get_distance() {
     delay(10);
     arr[i] = disSave;
     /* In kết quả ra Serial Monitor */
+    check_time_wait(); // kiem tra xem qua gio chua
   }
+  digitalWrite(power_sensor, 0); // tắt sung khếch đại
   for (int i = 0; i < 20; i++) {
     brr[arr[i]]++;
   }
@@ -191,8 +207,11 @@ int get_distance() {
       disSave = i;
     }
   }
+  #ifdef SERIAL_DEBUG
+      //Serial.begin(115200);
       Serial.print(disSave);
       Serial.println("cm");
+  #endif
   return disSave;
 }
 //================ VOID TINH THE TICH ================
@@ -206,20 +225,6 @@ float caculator (int dis) {
   else
     volSave = vol;
   return volSave;
-}
-//============= VOID KIEM TRA GAO THEO THE TICH ========
-bool checkRice (int vol) {
-  if (flag == true) {
-    trangthai = "yêu cầu";
-    return false;
-  } else {
-    if (vol <= MIN) {
-      trangthai = "sắp hết";
-      return false;
-    } else
-      trangthai = "còn gạo";
-    return true;
-  }
 }
 //=============== VOID KIEM TRA GAO THEO CHIEU CAO
 bool checkRiceHigh (int high) {
@@ -235,57 +240,86 @@ bool checkRiceHigh (int high) {
     return true;
   }
 }
-//======================== VOID EEPROM SO LAN PUSH =========
-void eeprom_push(){
-    EEPROM.get(EEPROM_COUNT_PUSH, count_push);
-    count_push++;
-    EEPROM.put(EEPROM_COUNT_PUSH, count_push);
-    EEPROM.commit();
-}
-//=================== VOID GUI DATA ======================
-void push_data(){
-  if (millis() - time_publish > TIME_PUBLISH){
+
+// ==================== DOC DATA VA TINH SO KI ======================
+
+float read_data(){
   int distance = get_distance ();
   float soki = caculator(distance);
   eeprom_push(); // NEU GUI DU LIEU LA EEPROM SO LAN PUSH
+  return soki;  
+}
+//=================== VOID GUI DATA ======================
+void push_data(float soki){
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject& root = jsonBuffer.createObject();
     root["id_box"] = id_box;
     root["soki"] = soki;
     root["pin"] = (float)ESP.getVcc()* VCC_ADJ;
-    root["trangthai"] = EEPROM.get(EEPROM_COUNT_PUSH, count_push);
+    root["trangthai"] = EEPROM.get(EEPROM_COUNT_PUSH, count_push) - ADC_MIN;
     char jsonChar[100];
-    root.printTo(jsonChar);
+    root.printTo(jsonChar); 
     client.publish("cntn/iot/esp/log", jsonChar);
-  time_publish = millis();
+}
+//=================== VOID ENBABLE WIFI =====
+void enable_wifi (){
+  WiFi.forceSleepWake();
+  WiFi.mode(WIFI_STA);
+  yield();
+  setup_wifi();
+  client.setServer(mqtt_server, 1883);
+  client.setCallback(callback);
+}
+// ================== VOID DISABLE WIFI =====
+void disable_wifi() {
+  WiFi.forceSleepBegin();  // send wifi to sleep to reduce power consumption
+  yield();
+}
+//=====================   CHECK RESET BUTTON =============
+void check_reset (){
+  int reasonRst = getResetReason(); 
+  EEPROM.get(100, valR);
+   if (reasonRst == 6) {
+    if (valR >= 2) {
+      EEPROM.put(100, 0);
+     // enter_smartconfig();
+      Serial.println("Enter smartconfig");
+    }
+    else {
+      EEPROM.put(100, valR + 1);
+    }
   }
+  else {
+    EEPROM.put(100, 1);
+  }
+  EEPROM.commit();
+}
+//===================== CHECK TIME RESET===================
+void check_time_reset (){
+     delay(2000);
+     EEPROM.put(100, 0);
+     EEPROM.commit();
+//     Serial.print("da du reset");
+//     EEPROM.get(100, valR);
+//     Serial.println(valR);
+}
+//===================== VOID SETUP ========================
+void setup() {
+  disable_wifi();
+  EEPROM.begin(512);
+  check_reset ();
+  check_time_reset();
+  check_daily();
+  pinMode(trig, OUTPUT);
+  pinMode(echo, INPUT);
+  pinMode(power_sensor, OUTPUT);
+  float soki = read_data ();
+  enable_wifi();
+  reconnect();
+  push_data(soki);
 }
 //======================  VOID LOOP =====================
 void loop() {
-  if (!client.connected()) {
-    reconnect();
-  }
   client.loop();
-  push_data();
-  remember_to_sleep();
-
+ check_time_wait(); // xem qua gio chua
 }
-
-
-
-
-//  Serial.print(soki);
-  //  Serial.println("  g");
-  //if (digitalRead(button) == 0) {
-  //  flag = true;
-  //}
-  //  if (!checkRiceHigh(distance)){
-  //    //if (!checkRice(soki)){
-  //    StaticJsonBuffer<200> jsonBuffer;
-  //    JsonObject& root = jsonBuffer.createObject();
-  //    root["id_box"] = id_box;
-  //    root["trangthai"] = trangthai;
-  //    char jsonChar[100];
-  //    root.printTo(jsonChar);
-  //    client.publish("cntn/iot/esp/thongbao", jsonChar);
-  //  }
