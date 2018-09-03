@@ -1,7 +1,7 @@
 #include <ArduinoJson.h>
 #include "GEBridge.h"
 #define SERIAL_NAME "MOVEMENT"
-#include <SerialCommand.h>
+#include "SerialCommand.h"
 GEBridge *globalBridge = GEBridge::sharedInstance;
 SerialCommand& sCmd = globalBridge->getSerial();
 
