@@ -39,6 +39,7 @@ void GEBridge::connect() {
     data["type"] = "connect";
     data["serial_name"] = serialName;
     data.prettyPrintTo(Serial);
+    delay(1000);
 }
 
 SerialCommand& GEBridge::getSerial() {
@@ -48,3 +49,4 @@ SerialCommand& GEBridge::getSerial() {
 void connected() {
     isConnected = true;
 }
+

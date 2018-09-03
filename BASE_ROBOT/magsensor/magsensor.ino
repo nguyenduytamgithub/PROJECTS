@@ -130,6 +130,7 @@ void setup_command (){
 void setup() 
 { 
   Serial.begin(115200);
+  globalBridge->setup(SERIAL_NAME);
   setup_command ();
   setup_mpu ();
   setup_motor();
@@ -303,7 +304,7 @@ void check_degree_error (){
 //=================== VOID LOOP =========================
 void loop() 
 {
-   sCmd.readSerial();
+  globalBridge->loop();
    //move_forward();
    #ifdef SERIAL_DEBUG_ENCODER
    Serial.print(local_left);
