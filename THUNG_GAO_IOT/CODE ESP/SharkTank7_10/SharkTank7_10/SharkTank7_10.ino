@@ -6,10 +6,11 @@
 
 //define
 #define id_box 12345
-//char* id_box = "12345"; // ma thung
 char* rBox_topic = "rBox/" ;
 
-#define TIME_SLEEP 0//0xffffffff 
+#define MIN_TIME 5e6//0xffffffff 
+#define MAX_TIME 0xffffffff
+unsigned TIME_SLEEP = 0;
 #define TIME_WAIT 15000 // thoi gian toi da ket noi wifi
 #define VCC_ADJ 1.096 //const do pin
 ADC_MODE(ADC_VCC);
