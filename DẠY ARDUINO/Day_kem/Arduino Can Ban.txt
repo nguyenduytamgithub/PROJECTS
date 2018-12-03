@@ -1,0 +1,87 @@
+Lịch trình dạy Arduino lớp Cơ bản
+#01 Giới thiệu phần cứng
+	Phần mềm IDE sử dụng 
+	Chương trình blink 
+	Thiết bị cơ bản và chức năng 
+	Bật tắt 1 bóng đèn với sơ đồ đơn giản và code mẫu
+	Giới thiệu cấu tạo 1 chương trình
+	Lập trình 1 bóng đèn bật tắt qua 3 phần
+	Giới thiệu khai báo 2 kiểu, pinMode
+	Nối mạch và lập trình 3 đèn với digitalWrite
+	Yêu cầu nâng cao với 3 đèn và delay
+#02	Giới thiệu nút nhấn và cấu tạo
+	Hướng dẫn nối mạch và nguyên lý
+	Giới thiệu câu lệnh if else
+	Giới thiệu digitalRead và tạo biến lưu trữ
+	Bật đèn theo điều kiện
+	Giới thiệu các toán tử
+	Lắp mạch 3 đèn và 2 nút
+	Điều khiển bật tắt đơn giản
+	Điều khiển bật tắt lồng
+	Điều khiển bật tắt nhiều điều kiện
+	Bài tập điều khiển nâng cao 
+#03 Giới thiệu analogWrite và PWM
+	Giới thiệu vòng lặp FOR
+	Điều chỉnh độ sáng 1 đèn tự động
+	Giới thiệu Serial và in ra giá trị đọc
+	Giới thiệu Serial Plotter và in ra biểu đồ
+	Lắp 2 đèn sáng ngược nhau
+	Giới thiệu biến trở, cấu tạo và lắp mạch
+	Chương trình điều khiển đèn với biến trở
+	Giới thiệu analogRead
+	Giới thiệu hàm map chuyển đổi
+	Bài tập theo điều kiện biến trở
+	Bài tập kết hợp nút và biến trở
+#04 Giới thiệu và cách cách code 
+	Cách thức viết hàm, gọi hàm
+	Truyền dữ liệu vào hàm
+	Giới thiệu nâng cao với nút nhấn và INPUT_PULLUP
+	Đếm số lần nhấn với nút nhấn
+	Bài tập cho đếm số lần nhấn
+	Nhấn giữ để bật tắt
+	Bài tập cho nhấn giữ
+	Giới thiệu buzzer và kết hợp bài tập	
+#05 Giới thiệu cảm biến ánh sáng
+	Sơ đồ và hoạt động
+	Điều khiển đèn với cảm biến
+	Bài tập nâng cao sáng tối
+	Giới thiệu cảm biến âm thanh
+	Vỗ tay bật đèn cơ bản
+	Vỗ tay bật đèn nâng cao 
+	Giới thiệu cảm biến nhiệt độ lm35
+	In giá trị ra màn hình
+	Bài tập bật tắt thiết bị với cảm biến
+	Giới thiệu cảm biến độ ẩm đất
+	Điều khiển thiết bị với cảm biến đất
+	Điều khiển bật tắt thiết bị trong ngưỡng yêu cầu
+#06 Giới thiệu cảm biến chất lượng không khí
+	In giá trị cảm biến ra Serial
+	Bật tắt đèn với cảm biến
+	Giới thiệu cảm biến Siêu âm
+	Cách chủng loại và so sánh hoạt động
+	Cách lắp đặt cho các loại và HCSR04
+	Giới thiêu code hoạt động
+	In giá trị ra màn hình monitor và xem
+	Bật tắt thiết bị cơ bản
+	Bật tắt thiết bị với ngưỡng nâng cao
+#07 Giới thiệu cảm biến nhiệt độ độ ẩm
+	Cách cài đặt thư viện và chạy ví dụ
+	Cách code cơ bản và in ra màn hình
+	Giới thiệu màn hình và thư viện
+	Cách khắc phục lỗi thường gặp 
+	Giới thiệu nodepad ++ điều chỉnh code
+	In giá trị cảm biến ra màn hình
+	Giới thiệu các hàm cơ bản trong màn hình
+	Bài tập giới thiệu bản thân
+	Bài tập nút bấm và in giá trị nhiều trang
+#08 Giới thiệu về động cơ
+	Thử chạy với arduino
+	Giới thiệu mạch điều khiển l293 hoặc l298
+	Mắc mạch với l293
+	Viết các hàm chạy cho động cơ
+	Giới thiêu servo
+	Thêm thư viện và chạy ví dụng
+	Code theo điều kiện nâng cao với servo
+Lịch trình dạy Arduino lớp Nâng cao
+	
+	

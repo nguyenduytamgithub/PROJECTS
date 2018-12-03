@@ -1,4 +1,4 @@
-====================các lệnh linux
++====================các lệnh linux
 https://quantrimang.com/cac-lenh-shell-co-ban-trong-linux-35789
 ============================= kết nối wifi
 1. kiểm tra ds file hiện có
