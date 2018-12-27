@@ -1,0 +1,60 @@
+################################################
+#
+# General configuration
+#
+# debug: Debug levels [0..3]
+# map-request-retries: Additional Map-Requests to send per map cache miss
+# log-file: Specifies log file used in daemon mode. If it is not specified,  
+#   messages are written in syslog file
+# ipv6-scope [GLOBAL|SITE]: Scope of the IPv6 address used for the locators. GLOBAL by default
+
+debug                  = 1 
+map-request-retries    = 2
+log-file               = /var/log/oor.log
+ipv6-scope             = SITE
+ 
+# Define the type of LISP device LISPmob will operate as 
+#
+# operating-mode can be any of:
+# xTR, RTR, MN, MS
+#
+operating-mode         = MS
+
+# For the rest of this file you can delete the sections that does not apply to 
+# the LISP device selected in operating-mode
+
+
+################################################
+#
+# MS configuration
+#
+
+# Control messages are received and generated through this interface
+# Only one interface is supported
+
+control-iface = wlan0
+
+# Define an allowed lisp-site to be registered into the Map Server. Several
+# lisp-site can be defined.
+# 
+#   eid-prefix: Accepted EID prefix (IPvX/mask)
+#   key-type: Only 1 supported (HMAC-SHA-1-96)
+#   key: Password to authenticate the received Map-Registers
+#   iid: Instance ID associated with the lisp site [0-16777215]
+#   accept-more-specifics [true/false]: Accept more specific prefixes
+#     with same authentication information 
+
+lisp-site {
+    eid-prefix            = 192.168.1.151/64
+    key-type              = 1
+    key                   = password
+    iid                   = 0
+    accept-more-specifics = false
+}
+lisp-site {
+    eid-prefix            = 192.168.1.152/64
+    key-type              = 1
+    key                   = password
+    iid                   = 0
+    accept-more-specifics = false
+}
