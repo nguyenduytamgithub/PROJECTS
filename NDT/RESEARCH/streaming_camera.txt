@@ -1,0 +1,42 @@
+1. Install build dependencies
+sudo apt-get install libjpeg8-dev imagemagick libv4l-dev
+2. Add missing videodev.h
+sudo ln -s /usr/include/linux/videodev2.h /usr/include/linux/videodev.h
+3. Download MJPG-Streamer
+wget http://sourceforge.net/code-snapshots/svn/m/mj/mjpg-streamer/code/mjpg-streamer-code-r182.zip
+4. Unzip the MJPG-Streamer source code
+unzip mjpg-streamer-code-r182.zip
+5. Build MJPG-Streamer
+cd mjpg-streamer-code-r182/mjpg-streamer
+make mjpg_streamer input_file.so output_http.so
+6. Install MJPG-Streamer
+sudo cp mjpg_streamer /usr/local/bin
+sudo cp output_http.so input_file.so /usr/local/lib/
+sudo cp -R www /usr/local/www
+7. Start the camera
+mkdir /tmp/stream
+// it's will be problem here
+raspistill --nopreview -w 640 -h 480 -q 5 -o /tmp/stream/pic.jpg -tl 100 -t 9999999 -th 0:0:0 &
+// you need to install something follow https://raspberrypi.stackexchange.com/questions/37359/how-to-use-raspistill-on-ubuntu/37387#37387
+npm install pi-camera
+npm install pi-camera --save
+1. Enable kernel/firmware settings required by the camera:
+sudo bash -c "echo 'start_x=1' >> /boot/config.txt"
+sudo bash -c "echo 'gpu_mem=128' >> /boot/config.txt"
+2. Install rpi-update and update the firmware
+curl -L --output /usr/bin/rpi-update https://raw.githubusercontent.com/Hexxeh/rpi-update/master/rpi-update && chmod +x /usr/bin/rpi-update
+sudo rpi-update
+3. Install userland binaries (e.g. raspistill):
+git clone https://github.com/raspberrypi/userland.git
+cd userland
+./buildme
+touch ~/.bash_aliases
+echo -e 'PATH=$PATH:/opt/vc/bin\nexport PATH' >> ~/.bash_aliases
+echo -e 'LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/vc/lib\nexport LD_LIBRARY_PATH' >> ~/.bash_aliases
+source ~/.bashrc
+ldconfig
+4. Give non-root users access to the camera device:
+echo 'SUBSYSTEM==\"vchiq\",GROUP=\"video\",MODE=\"0660\"' > /etc/udev/rules.d/10-vchiq-permissions.rules
+usermod -a -G video ubuntu
+5. Reboot to make all changes take effect
+sudo reboot now

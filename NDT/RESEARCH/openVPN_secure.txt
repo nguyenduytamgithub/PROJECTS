@@ -1,0 +1,17 @@
+Cài đặt openvpn tổng thể research ngày 26/12/2018
+bước 1 đổi tên thiết bị:
+	ubuntu@ubuntu:~# hostname OpenVPN-Server
+	ubuntu@ubuntu:~$ exit 
+cài đặt trên server
+Bật tường lửa:
+	ufw enable và kích hoạt 2 cổng quan trọng
+	ufw allow 22
+	ufw allow 1194
+
+cần cho phép các client tự chuyển hướng khi cần thiết
+vào file và bỏ dòng net.ipv4.ip_forward = 1
+	nano /etc/sysctl.conf 
+	sysctl -p // dòng này cập nhật trạng thái mới nhất
+	
+reseach tiếp ở link này 
+https://hackernoon.com/securing-your-network-connections-using-openvpn-a7ba22dc443e
