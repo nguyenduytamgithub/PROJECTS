@@ -1,0 +1,4 @@
+Kết hợp MQTT và Kafka
+http://www.kai-waehner.de/blog/2018/09/10/apache-kafka-mqtt-end-to-end-iot-integration-demo-scripts-github/
+https://github.com/kaiwaehner/kafka-connect-iot-mqtt-connector-example
+https://github.com/kaiwaehner/ksql-udf-deep-learning-mqtt-iot

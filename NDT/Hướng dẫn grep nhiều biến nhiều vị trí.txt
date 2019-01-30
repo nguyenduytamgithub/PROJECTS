@@ -1,0 +1,8 @@
+1. để tìm nhiều giá trị
+grep -E 'bien1|bien2' 
+2. để lấy toàn bộ 1 dòng kể từ giá trị tìm
+grep -Pzo 'bien(.*)*'
+3. để lấy hết các dòng sau đó luôn
+grep -Pzo 'bien(.*\n)*'
+4. để lấy luôn hàng trước và sau
+grep -Pzo '.*bien(.*\n)*'

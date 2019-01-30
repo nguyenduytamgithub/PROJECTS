@@ -1,0 +1,4 @@
+Hướng dẫn tạo openssl với mqtt
+http://www.steves-internet-guide.com/mosquitto-tls/
+https://www.youtube.com/watch?v=zPT8LFWqazM
+http://www.steves-internet-guide.com/securing-node-red-ssl/

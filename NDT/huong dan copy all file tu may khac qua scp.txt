@@ -1,0 +1,2 @@
+Hướng dẫn lấy toàn bộ file từ một máy khác qua scp
+scp <user>@ip:~/<direct>/* .

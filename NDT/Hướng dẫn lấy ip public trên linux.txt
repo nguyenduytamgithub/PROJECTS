@@ -1,0 +1,10 @@
+﻿Hướng dẫn lấy ip public với linux
+https://www.cyberciti.biz/faq/how-to-find-my-public-ip-address-from-command-line-on-a-linux/
+dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}'
+
+myip="$(dig +short myip.opendns.com @resolver1.opendns.com)"
+echo "My WAN/Public IP address: ${myip}"
+hoặc link này 
+https://tecadmin.net/5-commands-to-get-public-ip-using-linux-terminal/
+lay ip local
+ip addr show eth0 | grep 'inet ' | awk '{print $2}' | cut -f1 -d'/'

@@ -1,0 +1,17 @@
+research Kademlia 
+https://github.com/SyncfusionSuccinctlyE-Books/The-Kademlia-Protocol-Succinctly
+sách
+https://www.syncfusion.com/ebooks/kademlia_protocol_succinctly
+https://pythonhosted.org/kademlia/_modules/kademlia/network.html
+https://pythonhosted.org/kademlia/_modules/kademlia/protocol.html
+link github python
+https://github.com/bmuller/kademlia
+
+noi ve NAt
+https://www.emule-project.net/home/perl/help.cgi?l=1&rm=show_topic&topic_id=1499
+Thanh nien vuot Nat voi 1 dua ko nat va 1 dua proxy khi ca 2 deu nat 
+https://github.com/maidsafe-archive/MaidSafe-Routing/wiki/Documentation
+vấn đề nat 
+http://wiki.amule.org/wiki/FAQ_eD2k-Kademlia
+slider
+https://www.kth.se/social/upload/516479a5f276545d6a965080/3-kademlia.pdf
