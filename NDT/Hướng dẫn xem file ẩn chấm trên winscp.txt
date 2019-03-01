@@ -1,0 +1,2 @@
+Xem file ẩn trên winscp 
+ctrl + alt + H

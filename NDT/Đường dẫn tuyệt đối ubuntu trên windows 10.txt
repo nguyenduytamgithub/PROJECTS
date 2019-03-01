@@ -1,0 +1,2 @@
+Đường dẫn tuyệt đối với ubuntu trên win
+C:\Users\nguye\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs

@@ -1,0 +1,1 @@
+Hướng dẫn xem nodepad ++ cho json, thêm plug là jstool, rồi ctr + alt + M

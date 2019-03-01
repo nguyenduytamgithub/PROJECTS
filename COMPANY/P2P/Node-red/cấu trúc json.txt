@@ -1,0 +1,58 @@
+// ======== MQTT OUT =====
+{
+		"id": "464c897b.c9d0b8",
+		"type": "mqtt out",
+		"z": "23905b3.f1f97a4",
+		"name": "sua cai nay",
+		"topic": "",
+		"qos": "",
+		"retain": "",
+		"broker": "100cb346.2168cd",
+		"x": 810,
+		"y": 200,
+		"wires": []
+	}
+// ========= MQTT IN =======
+{
+		"id": "1f3ad2d2.3f3e0d",
+		"type": "mqtt in",
+		"z": "445ae8d9.a46618",
+		"name": "",
+		"topic": "elefos002",
+		"qos": "2",
+		"broker": "5c235ead.a3ca4",
+		"x": 100,
+		"y": 180,
+		"wires": [["562b44b6.0bf5ec"]] nối dây vô mã của function
+	}
+// ================ BROKER =========
+{
+		"id": "5c235ead.a3ca4",
+		"type": "mqtt-broker",
+		"z": "",
+		"name": "Server chính",
+		"broker": "142.93.252.222",
+		"port": "1883",
+		"clientid": "",
+		"usetls": false,
+		"compatmode": true,
+		"keepalive": "60",
+		"cleansession": true,
+		"birthTopic": "",
+		"birthQos": "0",
+		"birthPayload": "",
+		"closeTopic": "",
+		"closeQos": "0",
+		"closePayload": "",
+		"willTopic": "",
+		"willQos": "0",
+		"willPayload": ""
+	}
+// ================ FLOWS =======
+{
+		"id": "5c9417c4.1e7808",
+		"type": "tab",
+		"label": "reload_flows",
+		"disabled": false,
+		"info": ""
+	}

@@ -1,0 +1,12 @@
+Tìm và chèn trong json
+>>> line = 'Kong Panda'
+>>> index = line.find('Panda')
+>>> output_line = line[:index] + 'Fu ' + line[index:]
+>>> output_line
+'Kong Fu Panda'
+
+Chèn string vào vị trí
+def insertChar(mystring, position, chartoinsert ):
+    longi = len(mystring) #chiều dài
+    mystring   =  mystring[:position] + chartoinsert + mystring[position:] 
+    return mystring   
