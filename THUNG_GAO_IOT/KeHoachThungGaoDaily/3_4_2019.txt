@@ -1,0 +1,36 @@
+Kế hoạch
+Ngày 3/4/2019 
+Đừng suy nghĩ quá nhiều về công việc, cứ làm để biết đó là cách ngắn nhất sẽ giàu
+Tình hình thùng gạo cần thiết kế lại server node-red cho bản demo với cảm biến
+Các bước như sau:
+Sẽ có 1 kênh tiếp nhận dữ liệu hàng ngày gửi lên từ device
+Mục đích là ghi nhận thông số gạo mỗi ngày và lưu vào db
+Vì các thông số kiểm tra lượng gạo sắp hết cần điều chỉnh nên sẽ nằm trên server
+Dẫn tới device sẽ không bao giờ biết thời điểm hết gạo, mà nó cần được server tự check
+=> Gửi vào một kênh duy nhất và kênh đó sẽ tiến hành kiểm tra lượng gạo thông qua ngưỡng đã lưu trữ ở DB
+Tiếp nhận các thông tin bao gồm: 
+Mã thùng
+Lượng gạo
+Dung lượng pin
+* Để giảm tải cho các luồng kiểm tra, ví dụ khi nào hết pin, tình trạng hết gạo rồi nên tạo luồng thông báo riêng (ưu tiên pin, còn gạo thì tách luồng khó quản lý ngưỡng nào nên thông báo)
+=> tạo 1 luồng thông báo hết pin 
+Đây chỉ là luồng tổng hợp input, sau đó xử lý tính sau, không dồn hết vô 1 luồng
+Khi lưu trữ cần thêm các thông tin
+Mã thùng 
+Lượng gạo
+Dung lượng pin
+Thời gian 
+* Cần phản hồi thông tin gì đó để device subscrible nhận được đi ngủ, topic phải động
+Vì hiện tại chưa phải dựa vào mức độ ăn của người dùng nên giá trị ngưỡng có thể nằm ở device và được cập nhật dựa vào server
+==> tách làm 3 luồng:
+1 nhận từ nút nhấn và trạng thái hết gạo từ thùng
+2 nhận thông tin pin sắp hết
+3 nhận thông tin log mỗi ngày
+---------------------------------------------
+Nhập liệu khách hàng sẽ được thiết kế DB lưu trữ và design giao diện nên tạm bỏ qua
+---------------------------------------------
+Danh sách hàng đợi là các thùng đã xác định sắp hết. Thêm vào 1 table DB list ship
+Danh sách này được phân bổ theo các điểm phân phối => mỗi điểm phân phối có một mail riêng
+Các device sẽ được thêm vào danh sách dựa vào tọa độ gần với điểm phân phối gần nhất => quản lý điểm phân phối theo mã riêng
+---------------------------------------------
+Hôm nay tiến hành bộ test device ảo gửi data lưu trữ DB.

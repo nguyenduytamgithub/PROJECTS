@@ -1,0 +1,7 @@
+Tên server
+SuperNode01
+Danh sách server 
+157.230.34.0 (p2p_Server)
+68.183.234.96 (p2p)
+115.79.143.47 (pi 2020, 1184)
+206.189.148.189 (rBox)

@@ -1,0 +1,5 @@
+Cài đặt PIL và vẽ hình trên python
+ sudo apt install python-pip
+ sudo pip install pil
+ file font nằm đâu đó
+/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf"
