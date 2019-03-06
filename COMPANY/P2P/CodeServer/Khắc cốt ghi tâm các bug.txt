@@ -1,0 +1,52 @@
+Một số lưu ý khi clone đối với vps cách nhanh nhất là copy server bản snapshot
+không thì phải cài lại nhiều thứ
+và điều chỉnh ở code merger cho đúng tên của server .json là quan trọng nhất 
+và sửa trong file reload nếu không file sinh ra là tên cũ bị mv từ reload không ghi đè lên json chính 
+đã suy nghĩ trường hợp lỗi rồi thì chỉnh tay có cần chỉnh thêm gì ko, câu trả lời là ko, hãy xóa file sinh ra db là đủ
+Một lỗi lớn nhất là nếu bạn tạo 1 server mẫu từ chính cái node khác thì tới lượt copy cho node đó sẽ lỗi
+cách tốt nhất hãy làm 1 bản clone cho chính bản thân mình, lưu ý bản thân ko phải localhost, bản thân là ip của mình, chắc chắn chính mình cũng sẽ lỗi đầu tiên nhưng xóa đi, nhưng đứa sau clone sẽ lấy ip mình nên ko sợ nữa, còn chơi ngu lấy localhost thì xác định
+Một lưu ý lớn nữa khi clone, các mqtt in ko phải là p2p_elefos002 vì cái đó là tên bản gốc, phải edit cho đúng tên mình 
+--
+tóm tắt: lỗi sẽ nằm ở
+1 mqtt in, out không phải tên tao
+2 server mẫu tạo ra (test 1 cục đi) cẩn thận là một đứa trong tương lai (fix ở **)
+3 file code python và bash sai tên json 
+-- không cần cục mqtt in ban đầu vì ban đầu ko nghe ở sv nào cũng dc
+db mặc định có 1 mqtt_in tọa độ x y rồi
+-- để cập nhật ip cho server_dht thì chắc 3 đứa mẫu kệ mẹ nó, rồi update qua git thôi, dư kệ 
+=====
+Một vấn đề lớn nhất để chỉnh sửa tên kênh nghe, là tao là ai, tên gì?
+==> tên của t sẽ chắc chắn ko hề có trong db hiện tại => db hiện tại + 1 elefos ra tên tao
+vậy tại sao cần nhớ đến tên ở lần này, vì cục này đã có sẵn trong list nên hãy tìm tên và edit lại
+lần sau với cục mới cứ tra db tên cuối cùng là gì và + 1
+=====
+Vấn đề làm sao add một đứa mới toanh chưa tên vào db 
+cần có 1 đoạn code update my ip sau đó gửi lên kèm theo mã ip để chèn vào db 
+===== 
+Vấn đề về loop
+Nếu db connected không chứa chính bạn, nó mà tìm chính nó sẽ lỗi
+==> bất kì khi nào cũng phải tự add id mình vào id connected
+Hiện tại trong db 2 bản sẵn là dht được lấy từ git nên rất nhiều (code trong tương lai update thêm ko chỉ 3 cái sẵn)
+mqtt_in là phải có 1 tọa độ x y
+và cái thứ 3 mới ngộ ra chính là server_connected phải luôn có chính id mình và status 1
+để làm được điều đó phải có 1 cái gì đó tự add khi khởi động 1 lần duy nhất ip bản thân 
+Nếu chưa làm được chiệu khó thêm vào mục tự bổ sung vào db hoặc update db bằng tay mỗi khi clone
+===
+suy ra các công việc chỉnh tay bao gồm
+đổi tên mqtt in out là id mình
+thêm server_connected id mình // giải quyết được trường hợp loop vì sai tên, không sợ nữa (**)
+chỉnh code merger và code reload tên json 
+Vấn đề cuối là phải code thêm phần cập nhật dht nếu không là 3 đứa gốc vô dụng
+================
+Các bước triễn khai 1 node mới
+1 cài lại server node-red
+2 tải gói p2p_rasberry từ github
+3 cài phpmyadmin
+4 import database
+5 cài đặt python hỗ trợ code trong gói github 
+6 edit 1 số link từ node-red và file code python bash vì vps khác raspberry
+7 nội dung cơ bản trong database cần có
+===============
+vừa check lại vì mqtt in out có đứa là chỉ test nên kệ mẹ nó
+chúng ta chỉ lo lắng 2 đứa cần đổi tên mqtt in ở luồng chính và out ở luồng bắn xuống device
+

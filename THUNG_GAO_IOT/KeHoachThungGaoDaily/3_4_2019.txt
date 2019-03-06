@@ -1,4 +1,4 @@
-Kế hoạch
+Kế hoạch thùng gạo
 Ngày 3/4/2019 
 Đừng suy nghĩ quá nhiều về công việc, cứ làm để biết đó là cách ngắn nhất sẽ giàu
 Tình hình thùng gạo cần thiết kế lại server node-red cho bản demo với cảm biến
@@ -33,4 +33,4 @@ Danh sách hàng đợi là các thùng đã xác định sắp hết. Thêm và
 Danh sách này được phân bổ theo các điểm phân phối => mỗi điểm phân phối có một mail riêng
 Các device sẽ được thêm vào danh sách dựa vào tọa độ gần với điểm phân phối gần nhất => quản lý điểm phân phối theo mã riêng
 ---------------------------------------------
-Hôm nay tiến hành bộ test device ảo gửi data lưu trữ DB.
+Hôm nay tiến hành bộ test device ảo gửi data lưu trữ DB.0
