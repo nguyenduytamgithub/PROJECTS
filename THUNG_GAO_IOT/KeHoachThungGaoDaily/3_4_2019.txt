@@ -34,3 +34,46 @@ Danh sách này được phân bổ theo các điểm phân phối => mỗi đi�
 Các device sẽ được thêm vào danh sách dựa vào tọa độ gần với điểm phân phối gần nhất => quản lý điểm phân phối theo mã riêng
 ---------------------------------------------
 Hôm nay tiến hành bộ test device ảo gửi data lưu trữ DB.0
+=================================================== 9_3_2019 ============
+Subscrible Server
+Luồng 1: Nhận các log hàng ngày và insert vào bảng log, các device đều được check mã oauth với topc = id_device + hash (id_devive)
+Luồng 2: Nhận các thông báo hết gạo khi device gửi lên ==> mức thông báo sẽ được nạp vào device, device check và xác nhận push lên 1 kệnh khách
+Luồng 3: Nhận các thông báo hết pin từ device ==> mức hết cũng được lưu ở dưới devivce và cập nhât từ server
+
+Publish Server
+Luồng 1: sau khi nhận được log từ device sẽ tiến hành tính toán giá trị, nếu nằm đúng ngưỡng thì trả về ok để divice đi ngủ, nếu nằm ngoài ngưỡng thì trả về
+	một giá trị để device cập nhật lại có nên thức dậy và pub lại data cho đúng khung giờ hay không, mã bắn xuống được qua topic động id + hash id
+	
+Luồng 2: Khi có thùng gạo nằm trong tình trạng hết, server tiến hành check mã id và lookup vào ip tìm địa chỉ ip sau đó dùng thuật toán gì đó tìm địa chỉ của store gần nhất và add cả 
+	2 id này vô 1 cái db list mới. Để 6h sáng hôm sau tự lấy list này query lại theo mã cửa hàng và gửi về địa chỉ mail của cửa hàng đó
+	
+	Để tiết giảm chi phí tìm kiếm lại thuật toán vị trí thì tạo bảng lưu tạm thời đi kèm trạng thái cập nhật. Bình thường cứ lấy id store theo bảng này vì nó đã tự động lưu trường hợp
+	cuối cùng lookup được. Nếu như có 1 cửa hàng mới được thêm vào db thì toàn bộ hệ thống sẽ được thay đổi lại status và tiến hành lookup lại cho id đó
+Luồng 3: Luồng về pin thì chỉ là một flag, có nghĩa khi có 1 id gửi lên thì vào db và tiến hành update lại trạng thái cho luồng hết gạo, có nghĩa status sẽ nằm trong bảng hết gạo.
+	Mỗi lần query gì đó của hết gạo sẽ xem giá trị status = 0 hay 1. Nếu 0 thì lúc + nội dung sẽ = rỗng, ngược lại sẽ có text yêu cầu mang pin cho khác hàng
+	Cũng đề phòng luôn trên app là hết pin thông báo xuống để khách chủ động thay pin, nếu khác đã thay pin rồi có thể device sẽ kiểm tra mức pin và lên update lại cho status (bước này buộc phải làm khi mức pin thay đổi để update lại cho status)
+	
+=====
+Mỗi sáng 6h query bảng mã id store như thế nào? Mã của mỗi id cửa hàng sẽ theo 1 quy tắc tăng dần nên có 1 string sẵn, sẽ cộng với 1 con số tăng dần, lập lại id trong vòng for đến khi bằng tổng số phần tử có trong bảng
+=> cần biết đước số lượng cửa hàng có trong bảng để tiến hành query => sẽ query số lượng trong bảng store, sau đó chạy code với số vòng lặp để query trong bảng list mỗi ngày.
+=====
+Suy nghĩ về cách tính khoảng cách ntn?
+=====
+Vấn đề Luồng 2: Có hết gạo thật sự khi khách hàng mua gạo nhiều hơn mức đựng của thùng?
+Có một nhược điểm về thùng (phần cứng) lượng gạo bị nằm mức 9kg nên có 10kg họ cũng đổ không hết, vậy họ thường mua 5kg hoặc 7kg. Nếu có 1 thay đổi lớn là thay đổi thiết kế thùng cho phù hợp
+Không thì cần phối hợp bên sản xuất tạo ra những túi 2.5, 5, 7 tốt nhất là mức 7 so với thùng 9kg.
+Nhưng nếu khác hàng mua hơn => Lần gửi thông báo đầu tiên luôn là chưa hết gạo.
+Các bước tiến hành xác nhận đơn hàng như sau:
+	Nhận thông báo hết gạo, tiến hành kiểm tra xem khách hàng này mua lượng gạo lần gần nhất trong bảng rice_used là bao nhiêu. Lấy lượng gạo trong bảng log với giá trị max ở lần đặt gạo cuối cùng. 
+	So sánh 2 giá trị này xem mức đặt mua cuối có cao hơn so với lần gửi đầu tiên hay không. Tất nhiên là sẽ cao hơn vì lần gửi đầu phụ thuộc vào cảm biến, sai số sẽ cao.
+	Nên mức này cần dựa vào 1 con số do server quản lý, mức chênh lệch. Mức mua - lần đầu gửi - 1.2 + chênh lệch thì mức >= 2.5 là hợp lý (3.5) để không call ngược lại là call
+===== 
+Bàn về mức 1.2 bao nhiêu là phù hợp cho ngày hôm sau giao hàng
+Đã từng bàn về chuyện tăng mức 1.2 lên cao hơn mục đích để cảnh báo trước 1 ngày. Hay còn thời gian để hôm kế tiếp giao hàng ...
+=====*
+Chúng ta có thể bàn kĩ hơn 2 tham số đó là tham số cảnh báo và tham số gọi hay không gọi, bây giờ xây dựng xong hoạt động
+===== 
+Tình trạng các luồng hiện tại: 
+	Luồng 1: nhận log vẫn chưa có device để test giờ cho device ngủ lại, chưa check oauth db
+	Luồng 2: nhận thông báo hết gạo, chưa hoàn thành luồng kiểm tra hết thật hay chưa vì chưa biết cách lấy giá trị cuối cùng mà thiết bị gửi lên, max có thể là của những lần trước
+			Giá trị của bảng mua cuối cùng thì cần lấy sắp xếp theo thứ tự và lấy limit 1, hoặc lấy max unit nhưng có vẻ ko ổn
