@@ -85,3 +85,9 @@ Tình trạng các luồng hiện tại:
 Đã thêm thành công status cho rice_used và reset count cho log (nằm ở luồng 1 log)
 Công việc tiếp theo dựa vào giá trị reset của log để tìm ra giá trị lần đầu đỗ gạo vào thùng ở lần mua gần nhất
 Công việc này thuộc luồng 2: select giá trị gạo để xác định có call hay không 
+====
+Phát sinh 2 vấn đề lớn trong chiều nay
+	1 là xử lý lần đầu lưu trong log bị null vì chưa có giá trị id để query
+	2 xử lý trường hợp call lần 2 bị fail do data ở lần gửi đầu không thay đổi dẫn tới kết quả trừ từ tổng số kí khách mua trừ đi dữ liệu cũ
+Đã fix thành công bằng cách thêm luồng insert cho log đầu tiên và đi kèm giá trị status cho rice_used về 0
+Có 2 giá trị status, 1 là của update rice_used, 2 là của cộng dồn data cho lần call thứ 2, tổng gạo sẽ cộng vào lần 1 thì ở lần tính hiệu thứ 2 sẽ trừ đi tổng là biết chính xác hết gạo hay chưa
