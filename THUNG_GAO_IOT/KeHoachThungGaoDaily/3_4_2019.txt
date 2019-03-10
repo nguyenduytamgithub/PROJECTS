@@ -77,3 +77,11 @@ Tình trạng các luồng hiện tại:
 	Luồng 1: nhận log vẫn chưa có device để test giờ cho device ngủ lại, chưa check oauth db
 	Luồng 2: nhận thông báo hết gạo, chưa hoàn thành luồng kiểm tra hết thật hay chưa vì chưa biết cách lấy giá trị cuối cùng mà thiết bị gửi lên, max có thể là của những lần trước
 			Giá trị của bảng mua cuối cùng thì cần lấy sắp xếp theo thứ tự và lấy limit 1, hoặc lấy max unit nhưng có vẻ ko ổn
+			Cách giải quyết cho luồng 2 đó là thêm số lần gửi data trong bảng log, mục đích khi giao gạo mới thì reset về 0, khi đó ta sẽ query lần đầu tiên một cách dễ dàng
+			Cần thêm 1 biến trong rice_used để xác định đã đặt hàng mới hay chưa
+			Điều kiện đi kèm để reset là đã cập nhật và biến hôm nay nhận được lớn hơn gạo hôm qua. 
+			Sau đó đặt biến đặt gạo về 0 để sai điều kiện lần kế tiếp, biến count sẽ tăng dần.
+================================================= 10_3_2019 ==============================
+Đã thêm thành công status cho rice_used và reset count cho log (nằm ở luồng 1 log)
+Công việc tiếp theo dựa vào giá trị reset của log để tìm ra giá trị lần đầu đỗ gạo vào thùng ở lần mua gần nhất
+Công việc này thuộc luồng 2: select giá trị gạo để xác định có call hay không 
