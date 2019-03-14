@@ -49,4 +49,31 @@ Các bước triễn khai 1 node mới
 ===============
 vừa check lại vì mqtt in out có đứa là chỉ test nên kệ mẹ nó
 chúng ta chỉ lo lắng 2 đứa cần đổi tên mqtt in ở luồng chính và out ở luồng bắn xuống device
+===================================================== 13_3_2019 ============================
+Đã thêm tính năng backup cho tin nhắn đầu tiên ko bị mất
+Các server lần đầu đã hoàn thành auto setting
+Chưa làm luồng nếu như không có phản hồi tư nó, thì list đang status 0. nếu gửi và kiểm tra thấy thì phải gửi lại gói tin cài đặt, cẩn thận bên kia đã có thêm server, mqtt
+Các trường hợp có thể xảy ra đó là: 
+Tin nhắn gửi đi không thành công dẫn tới status = 0, gói tin cần ở lần sau sẽ được gửi lại
+Nhưng có thể bên kia đã cho vào list rằng đã có cài đặt, (hay tôi đã có bạn rồi) nên ta phải đưa luồng cài đặt request trước luôn, nó cần phải check list xem đã có kết nối chưa đã
+Khi đã có thì dẫn tới nó sẽ chỉ update status thôi chứ nó không có quyền insert 0 nữa, => ở luồng stt = 0 ta sẽ làm 2 việc là 1 gửi lại gói tin cài đặt, 2 là update nó về 1. Khoan...
+Update về 1 khi nó nhận được gói tin cài lại chứ không phải nó tự udpate status = 1. update ở đây là của người khác gửi tới.
+== Đã giải quyết bằng cách nối 1 sợi siêu dài từ đoạn status = 0. vì đã có trong list nên việc của t là, nếu tao gửi lại gói tin cài thì chạy luồng trên, còn nếu tao được yêu cầu thì tao update và gửi lại thông báo để mày update status
+Siêu big problem khi tao hay mày đã là 1 rồi thì chẳng còn cơ hội check vì đi vào luồng 1 thì ko làm gì cả, nên sẽ ko có chuyện đối tác được update status :)) cần fix chỗ này
 
+=== BUG
+Nếu tao bằng 0 mà tao chưa có server bắn đi thì lỗi không bao giờ bắn được. Vì phải có server thì mới cùng lúc tạo 0. Vậy có ổn hay không nếu hôm nay t tạo 0 nhưng bắn đi bị fail
+Vậy lần sau tao bắn đi sẽ không được vì luồng đó có nguy cơ bị pass qua và chạy thẳng đến gửi lại setup. Trong khi cài đặt phía cuối làm gì có mà gửi
+==> Bước gửi lại gói tin khi status = 0 là sai hoàn toàn. Nếu bị thay đổi mất cái server ở mqtt cuối. => nếu bị 0 thì nhờ đến một ai đó đổi biến server ở cục mqtt cuối lại và reset toàn bộ => bước = 0 ko dán vào cục switch
+=== Đã xong status 0 bằng cách tạo thêm 1 update.py để chỉ tìm lại server to cho cái mqtt đầu ra. Nếu xóa lun cục mqtt in thì nó không thể tự tạo để nghe và xóa server thì thua
+====================================================== 14_3_2019 ============================
+Hôm qua vẫn bị bug ở 0 - 0 status, khi bên nhận phát hiện mình = 0 thì nó lại lỗi kết nối server.
+Hôm nay ghi rõ các trường hợp sẽ xảy ra 0 - 1
+Đã hoàn thành các trường hợp 0 - 1, ngay cả khi bằng 1 cũng phải reset vì mqtt bị thay đổi
+==== xử lý bài toán server vps làm nơi lưu và broadcast dht
+chưa làm 1 cái gì đó đọc hết các giá trị tên id_server và ip public, hiện tại đang nhập tay
+Kế hoạch là mỗi lần có 1 device mới thì phải tự xin ra 1 code, down xuống và chạy thì sẽ tự thêm file chứ tên ip, code, db, tự config các dòng điền tay hiện tại
+=== Hiện tại đã có thể tự check có sự thay đổi của ip không trong dht rồi mới push lên vps cho broadcast. interval 1h tự kiểm tra lại ip
+Thêm 1 luồng nghe để update ip trong dht, không có trường hợp insert vì server mới là người quản lý ip mới của raspberry
+==== Ở server database thì phải insert rồi mới broadcast. Lần sau sẽ có thêm mã oauth để check hết tất cả device có đúng ko thì mới được vào cập nhật ip server.
+Mã oauth cũng được ném xuống dưới file config của device
