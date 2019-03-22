@@ -8,3 +8,5 @@ hoặc link này
 https://tecadmin.net/5-commands-to-get-public-ip-using-linux-terminal/
 lay ip local
 ip addr show eth0 | grep 'inet ' | awk '{print $2}' | cut -f1 -d'/'
+lay mac 1 dong duy nhat
+ifconfig | grep 'HWaddr' | awk '{print $5}' | head -n 1 

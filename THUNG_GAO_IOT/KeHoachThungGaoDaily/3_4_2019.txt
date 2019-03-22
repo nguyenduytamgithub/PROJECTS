@@ -97,3 +97,5 @@ Làm tính năng viết mail
 Đã tạo xong luồng query 6h sáng loop trừ dần biến tổng số cửa hàng hiện hành. Có thể dùng số trong bảng config nhưng mắc thời gian, ta có thể query từ map và lấy length
 --- 5h56p 
 Đã xong luồng gửi mail và edit lại cách loop, giảm số lần query lại.
+================================================= 14_3_2019 ===============================
+Hôm nay thử làm xong luồng pin và sau đó viết các kịch bản (usecase) cho toàn bộ server 

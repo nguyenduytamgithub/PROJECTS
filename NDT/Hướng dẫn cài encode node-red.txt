@@ -1,0 +1,2 @@
+npm install node-red-contrib-crypto-js
+hoặc node-red-contrib-crypto-js trong install node

@@ -77,3 +77,15 @@ Kế hoạch là mỗi lần có 1 device mới thì phải tự xin ra 1 code, 
 Thêm 1 luồng nghe để update ip trong dht, không có trường hợp insert vì server mới là người quản lý ip mới của raspberry
 ==== Ở server database thì phải insert rồi mới broadcast. Lần sau sẽ có thêm mã oauth để check hết tất cả device có đúng ko thì mới được vào cập nhật ip server.
 Mã oauth cũng được ném xuống dưới file config của device
+===================================================== 15_3_2019 ==============================
+Đã làm phần interval và thức dậy kiểm tra để update IP
+Một ý tưởng mới nhận id_server đó là, tạo 1 luồng get my ip
+Nó sẽ yêu cầu lên db vps chính, ngay lập tức server trả về trên 1 kênh gì đó trên device, nó sẽ tạo 1 file config phía dưới với mã nhận từ server. hoặc có thể là lưu vào 1 bảng khác
+Từ device chỉ được insert từ phía server gửi xuống để đảm bảo ko lộn xôn. Mọi thứ nên được update qua broker chính để đảm bảo tính thống nhất, kiểm soát, nếu có fail thì cũng chỉ đứa gửi.
+== Vẫn chưa có luồng cho một đứa mới vô, đứa mới vô có thể null ở phần ip, nhưng thường nó được yêu cầu từ 1 device cấp mã cho nó.
+=== Lỗi siêu bự do database khác nhau, cẩn thận và chọn server vps làm chính cho an toàn
+==================================================== 18_3_2019 ===============================
+Đã hoàn thành test lookup từ 1 server vps chứ không lookup trong file dht trên node, với lý do không đồng bộ được
+=================================================== 19_3_2019 =================================
+Bug của chế độ ngủ dậy rất to đoạn gửi cả danh sách lên, không thể reload 1 cách hiệu quả, đành phải dùng delay 3s
+Chưa làm được file khởi tạo, chưa có insert new node
