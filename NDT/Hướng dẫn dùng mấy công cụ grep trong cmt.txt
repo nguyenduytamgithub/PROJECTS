@@ -1,3 +1,4 @@
 grep 'ten' ra dong dong
 awk '{print $5}' ra vi tri thu 5
 cut -f1 -d'/' lay truoc dau /
+head -n 1 so dong so lay

@@ -1,0 +1,11 @@
+Hướng dẫn hack wifi với esp8266 - deauther
+https://github.com/spacehuhn/esp8266_deauther/wiki/Installation#flash-download-tools
+Tải phần mềm nạp code 
+https://github.com/nodemcu/nodemcu-flasher 
+chọn phiên bản 64 cài đặt các thông số 115200 4M 80
+Tải bin cài đặt 
+https://github.com/spacehuhn/esp8266_deauther/releases
+có thể chọn bản mới nhất cho mạnh hoặc chọn 1.1 cho dễ sài
+
+ssid: pwned 
+passwork: deauther

@@ -99,3 +99,6 @@ Làm tính năng viết mail
 Đã xong luồng gửi mail và edit lại cách loop, giảm số lần query lại.
 ================================================= 14_3_2019 ===============================
 Hôm nay thử làm xong luồng pin và sau đó viết các kịch bản (usecase) cho toàn bộ server 
+================================================= 24_3_2019 ===============================
+Sau 10 ngày không làm được cái quần què gì thì thùng gạo đã có phiên bản demo hardware
+Kế hoạch hôm nay sẽ viết lại code cho hardward và được tổ chức các phiên bản theo ngày có kèm theo readme trong một thư mục

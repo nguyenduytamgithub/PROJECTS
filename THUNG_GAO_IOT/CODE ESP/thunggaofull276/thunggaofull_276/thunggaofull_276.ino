@@ -18,9 +18,9 @@ ADC_MODE(ADC_VCC);
 #define MAGIC_NUMBER 2 //so quyet dinh so lan ngu
 
 
-const char* ssid = "GE";
-const char* password = "1234567891011";
-const char* mqtt_server = "192.168.20.127";
+const char* ssid = "ChiThuy";
+const char* password = "67896789";
+const char* mqtt_server = "128.199.236.138";
 int S = 400;
 int h = 28;
 int count_wakeup;  
