@@ -1,0 +1,7 @@
+Hướng dẫn về public key và private key, mã hóa và giải mã 
+Đây là dạng bất đối xứng và có thể dùng thằng nào khóa hay giải mã đều được
+Nếu dùng public khóa thì chỉ có đứa cầm private mới mở được
+Còn nếu dùng private khóa thì ai có public đề mở được, mục đích là kí và kí là để biết đúng người gửi và hash chưa bị modify
+https://stackoverflow.com/questions/18257185/how-does-a-public-key-verify-a-signature
+cài đặt
+http://www.steves-internet-guide.com/?s=ssl

@@ -1,0 +1,17 @@
+Cách SSL/TLS hoạt động
+1) Trình duyệt gửi yêu cầu đến server
+2) Server gửi lại 1 CA chứa bên trong public key của server (CA phải uy tín và trình duyệt sẽ lấy nó về sài)
+3) Trình duyệt dùng CA có trước đó để xác nhận chữ kí server có đúng không để chấp nhận public server (chữ kí server đã đăng kí ở CA) 
+4) Sử dụng pubic key đó mã hóa cho 1 mã khóa phiên vừa tạo ra và gửi cho server
+5) Server lấy private giải mã để lấy khóa phiên
+6) Thiết lập thành công, giờ chỉ dùng khóa phiên để khóa và mở
+
+
+  openssl genrsa -des3 -out ca.key 2048 // tạo khóa ca nhớ là bỏ -des3 để khỏi thêm cái khóa phiên
+  openssl req -new -x509 -days 1826 -key ca.key -out ca.crt // cái này mượn x509 xác thực giùm rồi, nhập thông tin x509 nhớ là new và người kí là ca.key
+  openssl genrsa -out server.key 2048 // tạo key server
+  openssl req -new -out server.csr -key server.key // cái này người dùng phải điền thông tin xuất ra server.csr vì nó request, người kí là server.key
+  openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days 360 // cái này dựa vào csr ở trên chứ không phải new nên có -in và dùng ca key để kí
+  // ở bước trên có nhiều đối tượng tham gia công việc kí, nhưng hướng dẫn chỉ nói là ca.crt kí ở dưới lại nói ca.key verify và kí
+  Sẽ có các file hình thành, ca.key, ca.crt, server.crt, server.csr. server.key nhưng ta chỉ cần 3 cái là ca.crt và server.key, server.crt
+  Và cái ca.crt chắc chắn người dùng sẽ nắm, mục đích mở khóa cho cái server.crt để lấy public key 
