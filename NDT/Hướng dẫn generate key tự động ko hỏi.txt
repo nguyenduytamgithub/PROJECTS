@@ -1,0 +1,12 @@
+Hướng dẫn generate key pairs không hỏi yes và bỏ qua password
+Với window
+echo y | ssh-keygen -t rsa -f C:/Users/nguye/.ssh/id_rsa -q -P ""
+với linux
+yes y | ssh-keygen -f /root/.ssh/id_rsa -q -N "" 
+
+----------- generate với ssl
+openssl genrsa -out private 2048
+openssl rsa -in private -pubout -out public
+sign -- verify
+openssl rsautl -sign -in msg -out signed -inkey private
+openssl rsautl -verify -in signed -out signedFile -inkey public -pubin

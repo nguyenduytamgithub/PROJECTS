@@ -1,0 +1,8 @@
+Hướng dẫn cài giao diện và vnc lên server vps
+sudo apt-get install tasksel
+sudo tasksel
+chọn vào ubuntu maxte gì gì đó
+đăng nhập digitalocean vào console html5
+tải vnc view
+đăng nhập vnc view
+ok
