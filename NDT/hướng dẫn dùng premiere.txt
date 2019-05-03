@@ -1,0 +1,4 @@
+Hướng dẫn thao tác premiere
+Lật video
+transform --> flip horizon or -100 horizon
+chèn logo kéo hình vô là dc

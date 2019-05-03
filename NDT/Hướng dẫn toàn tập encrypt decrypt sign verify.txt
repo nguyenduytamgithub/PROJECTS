@@ -1,0 +1,10 @@
+Hướng dẫn toàn tập encrypt decrypt sign verify
+#generate sig and encrypt to base64
+openssl dgst -sha256 -sign key_sign -out signature transaction 
+openssl base64 -in signature -out signatureBase64
+#decrypt base64 to defaul signature and verify
+openssl base64 -d -in signatureBase64 -out signatureDgst
+openssl dgst -sha256 -verify ../public -signature sigBase64 transaction
+==================================
+https://www.zimuel.it/blog/sign-and-verify-a-file-using-openssl
+https://gist.github.com/carlj/6509821
