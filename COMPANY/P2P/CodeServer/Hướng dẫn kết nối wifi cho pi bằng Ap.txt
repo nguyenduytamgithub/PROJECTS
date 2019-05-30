@@ -1,0 +1,2 @@
+Hướng dẫn kết nối wifi bằng AP
+https://github.com/sabhiram/raspberry-wifi-conf/tree/master/app

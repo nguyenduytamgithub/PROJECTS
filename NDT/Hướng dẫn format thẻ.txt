@@ -1,0 +1,6 @@
+Hướng dẫn format thẻ
+chạy cmd admin
+diskpart
+list disk
+select disk <cai the>
+attributes disk clear readonly
