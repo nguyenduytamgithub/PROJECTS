@@ -1,0 +1,6 @@
+Tạo 1 khóa rand với symathic và kiểu base64
+openssl rand -base64 -out sym_keyfile 128
+mã hóa với aes về base64
+openssl enc -aes-256-cbc -base64 -in packet_1 -out enrypt_packet_1 -k sym_keyfile 
+vì ở trên 128 nên phải dùng 1 cặp key từ 1024 trở lên (/8)
+https://security.stackexchange.com/questions/33434/rsa-maximum-bytes-to-encrypt-comparison-to-aes-in-terms-of-security
